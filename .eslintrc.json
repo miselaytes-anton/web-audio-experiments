@@ -1,0 +1,9 @@
+{
+  "extends": ["warp/es6", "warp/module", "warp/node"],
+  "env": {
+    "browser": true
+  },
+  "rules": {
+    "class-methods-use-this": 0
+  }
+}

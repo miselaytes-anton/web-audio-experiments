@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="node_modules/nouislider/distribute/nouislider.min.css">
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+            background: dimgrey
+        }
+
+        .ui {
+            margin: 20px auto;
+            display: block;
+            width: 300px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.7)
+        }
+    </style>
+</head>
+
+<body>
+    <div class="ui">
+        <h2>Freeverb</h2>
+        <section style="margin-bottom: 50px;">
+            <label>Room Size</label>
+            <div id="roomSize" style="width:100%"></div>
+        </section>
+        <section style="margin-bottom: 50px;">
+            <label>Dampening</label>
+            <div id="dampening" style="width:100%"></div>
+        </section>
+        <section style="margin-bottom: 50px;">
+            <label>Wet</label>
+            <div id="wet" style="width:100%"></div>
+        </section>
+        <section style="margin-bottom: 50px;">
+            <label>Dry</label>
+            <div id="dry" style="width:100%"></div>
+        </section>
+        <button onclick="freeverb.turnon()">Turn on!</button>
+    </div>
+
+    <script src="bundle.js"></script>
+</body>
+
+</html>

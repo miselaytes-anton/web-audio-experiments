@@ -1,0 +1,17 @@
+{
+  "name": "freeverb-app",
+  "version": "0.0.0",
+  "dependencies": {
+    "freeverb": "0.0.0",
+    "nouislider": "^11.1.0",
+    "web-audio-utils": "0.0.0"
+  },
+  "devDependencies": {
+    "browserify": "^16.2.2",
+    "serve": "^7.2.0"
+  },
+  "scripts": {
+    "build": "npx browserify index.js -o bundle.js --s freeverb",
+    "start": "serve"
+  }
+}

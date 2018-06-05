@@ -1,0 +1,15 @@
+{
+  "name": "audio-worklet-delay",
+  "scripts": {
+    "build": "npx browserify index.js -o bundle.js",
+    "start": "serve"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "web-audio-utils": "0.0.0"
+  },
+  "devDependencies": {
+    "browserify": "^16.2.2",
+    "serve": "^7.2.0"
+  }
+}
