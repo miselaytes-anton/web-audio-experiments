@@ -1,7 +1,7 @@
 import {flatMap} from 'lodash';
-import {Freeverb} from 'cassowary'
 import impulses from'./impulses.json';
-
+const getLiveAudio = (audioCtx) => navigator.mediaDevices.getUserMedia({audio: true})
+.then(stream => audioCtx.createMediaStreamSource(stream));
 const audioCtx = new AudioContext();
 
 const impulseBuffers = {};
@@ -12,7 +12,7 @@ const getImpulseBuffer = (impulse) => {
 };
 
 const loadImpulses = () => {
-    const promises = flatMap(impulses, (group, groupName) => 
+    const promises = flatMap(impulses, (group, groupName) =>
     group.map(impulse => getImpulseBuffer(`/impulses/${groupName}/${impulse}`)
     .then(buffer => impulseBuffers[impulse] = buffer)
     ))
@@ -32,18 +32,13 @@ const applyImpulse = impulse => {
 const init  = (impulse) => {
     return loadImpulses()
     .then(() => applyImpulse(impulse))
-    .then(() => navigator.mediaDevices.getUserMedia({audio: true}))
-    .then(function(stream) {
-        const input = audioCtx.createMediaStreamSource(stream);
-        const opts = { dampening: 3000, roomSize: 0.7, dryGain: 0.2, wetGain: 0.8 }
-        const freeverb = new Freeverb(audioCtx, opts)
-        input.connect(freeverb).connect(audioCtx.destination)
-        //input.connect(convolver);
+    .then(() => getLiveAudio(audioCtx))
+    .then((liveIn) => {
+      liveIn.connect(convolver)
     })
     .catch(function(err) {
         console.log('could not init', err);
     });
-
 }
 
 export {init, applyImpulse};
