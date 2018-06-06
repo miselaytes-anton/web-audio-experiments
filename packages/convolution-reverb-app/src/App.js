@@ -72,6 +72,11 @@ class App extends Component {
             GitHub
           </a>
         </Typography>
+        <Typography style={{marginTop: 10}}>
+          <a href="http://www.echothief.com">
+              Impulse responses
+          </a>
+        </Typography>
 
       </div>
     );
