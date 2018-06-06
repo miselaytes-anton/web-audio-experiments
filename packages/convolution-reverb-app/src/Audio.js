@@ -13,7 +13,7 @@ const getImpulseBuffer = (impulse) => {
 
 const loadImpulses = () => {
     const promises = flatMap(impulses, (group, groupName) =>
-    group.map(impulse => getImpulseBuffer(`/impulses/${groupName}/${impulse}`)
+    group.map(impulse => getImpulseBuffer(`${process.env.PUBLIC_URL}/impulses/${groupName}/${impulse}`)
     .then(buffer => impulseBuffers[impulse] = buffer)
     ))
     return Promise.all(promises);
