@@ -17,12 +17,19 @@
             padding: 40px;
             background: rgba(255, 255, 255, 0.7)
         }
+        .intro {
+            font-size: 12px;
+            margin-bottom: 30px;
+        }
     </style>
 </head>
 
 <body>
     <div class="ui">
-        <h2>Freeverb</h2>
+        <h2>Freeverb demo</h2>
+        <p class="intro">
+            Please use <strong>headphones</strong>. Snap your fingers near a mic or connect an instrument to line-in.
+        </p>
         <section style="margin-bottom: 50px;">
             <label>Room Size</label>
             <div id="roomSize" style="width:100%"></div>
@@ -39,7 +46,7 @@
             <label>Dry</label>
             <div id="dry" style="width:100%"></div>
         </section>
-        <button onclick="freeverb.turnon()">Turn on!</button>
+        <button onclick="freeverb.turnon()">Unmute</button>
     </div>
 
     <script src="bundle.js"></script>
