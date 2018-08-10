@@ -1,0 +1,22 @@
+{
+  "name": "graph-app",
+  "version": "0.0.0",
+  "scripts": {
+    "build": "rm -rf build && npx browserify src/index.js -o build/bundle.js && cp -R public/** build",
+    "start": "serve"
+  },
+  "dependencies": {
+    "lodash": "^4.17.10",
+    "virtual-audio-graph": "^1.1.0",
+    "watchify": "^3.11.0",
+    "web-audio-utils": "0.0.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.3",
+    "browserify": "^16.2.2",
+    "eslint": "^4.19.1",
+    "eslint-config-standard-react": "^6.0.0",
+    "eslint-config-warp": "^2.1.1",
+    "serve": "^7.2.0"
+  }
+}
