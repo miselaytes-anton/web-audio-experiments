@@ -17,7 +17,7 @@ const makeDistortionCurve = (amount) => {
 }
 
 const getGuitarSoundBuffer = (audioCtx) => {
-  return fetch('/guitar.wav')
+  return fetch('guitar.wav')
   .then(response => response.arrayBuffer())
   .then(arrayBuffer => audioCtx.decodeAudioData(arrayBuffer));
 };
