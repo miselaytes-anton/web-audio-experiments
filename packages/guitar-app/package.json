@@ -1,6 +1,6 @@
 {
-  "name": "graph-app",
-  "version": "0.0.0",
+  "name": "guitar-app",
+  "version": "0.0.1",
   "scripts": {
     "build": "rm -rf build && npx browserify src/index.js -o build/bundle.js && cp -R public/** build",
     "start": "serve"
@@ -8,9 +8,7 @@
   "dependencies": {
     "lodash": "^4.17.10",
     "redux": "^4.0.0",
-    "virtual-audio-graph": "^1.1.0",
-    "watchify": "^3.11.0",
-    "web-audio-utils": "0.0.0"
+    "virtual-audio-graph": "^1.1.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.3",
