@@ -1,0 +1,19 @@
+{
+  "name": "loop-app",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "rm -rf build && npx browserify src/index.js -o build/bundle.js && cp -R public/** build",
+    "start": "serve build",
+    "watch": "npx watchify src/index.js -o build/bundle.js"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "babel-eslint": "^8.2.3",
+    "browserify": "^16.2.2",
+    "eslint": "^4.19.1",
+    "eslint-config-standard-react": "^6.0.0",
+    "eslint-config-warp": "^2.1.1",
+    "serve": "10.0.0",
+    "watchify": "^3.11.0"
+  }
+}
