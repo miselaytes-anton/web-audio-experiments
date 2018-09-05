@@ -2,10 +2,55 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Loop app</title>
+    <style>
+        html, body {
+            height: 100%;
+        }
+
+        .flex-container {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            flex-direction: column;
+        }
+
+        .box {
+            flex: 0 1 auto;
+            display: flex;
+            justify-content: space-around;
+            flex-direction: column;
+        }
+        .button{
+            height: 50px;
+            width: 100px;
+            font-size: 20px;
+            cursor: pointer;
+            background-color: tomato;
+            color: white;
+            border: none;
+            transition-duration: 0.4s;
+        }
+        .button:hover{
+            background-color: #e24f35;
+        }
+        .button:focus {
+            outline:0;
+        }
+
+
+    </style>
 </head>
 <body>
-<button id="record">Record</button>
+<section class="flex-container">
+    <div class="box">
+        <canvas id="tutorial" width="500" height="500"></canvas>
+    </div>
+    <div class="box">
+        <button id="record" class="button">Record</button>
+    </div>
+</section>
 <script src="bundle.js"></script>
 </body>
 </html>

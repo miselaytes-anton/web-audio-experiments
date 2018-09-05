@@ -1,6 +1,24 @@
-//https://codepen.io/jamesseanwright/pen/jrmayRv
+const {mapRange} = require('./util');
 const Recorder = require('./Recorder');
 const Scheduler = require('./Scheduler');
+const {draw} = require('./canvas');
+
+const state = {
+  trackLength: 20,
+  tracks: [
+    {start: 1.5, duration: 10.3},
+    {start: 11, duration: 3.5},
+    {start: 10, duration: 10},
+  ],
+  currentPosition: 0
+};
+const update = state => {
+  draw(state);
+  const positionChange = mapRange([0, state.trackLength], [0, 0.6], 1)
+  const newState = {...state, ...{currentPosition: state.currentPosition + positionChange}};
+  window.requestAnimationFrame(() => update(newState));
+};
+window.requestAnimationFrame(() => update(state));
 
 //in seconds
 const TAPE_LENGTH = 5;
