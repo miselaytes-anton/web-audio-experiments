@@ -1,18 +1,18 @@
 class Scheduler {
-  constructor(audioContext, tapeLength) {
+  constructor(audioContext, loopLength) {
     this.audioContext = audioContext;
-    this.tapeLength = tapeLength;
+    this.loopLength = loopLength;
   }
   schedule({buffer, startTime}) {
-    const {audioContext, tapeLength} = this;
+    const {audioContext, loopLength} = this;
     const _schedule = (buffer, _startTime, isFirstPlay = true) => {
-      const startTime = isFirstPlay ? _startTime + tapeLength : _startTime;
+      const startTime = isFirstPlay ? _startTime + loopLength : _startTime;
       const sourceNode = audioContext.createBufferSource();
       sourceNode.buffer = buffer;
       sourceNode.connect(audioContext.destination);
       sourceNode.start(startTime);
       sourceNode.onended = () => {
-        _schedule(buffer, startTime + tapeLength, false);
+        _schedule(buffer, startTime + loopLength, false);
       };
     };
     _schedule(buffer, startTime);

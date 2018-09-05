@@ -1,6 +1,6 @@
 const {mapRange} = require('./util');
 
-const canvas = document.getElementById('tutorial');
+const canvas = document.getElementById('the-canvas');
 const ctx = canvas.getContext('2d');
 const getColor = (i) =>{
   const color1 = 'rgba(52, 89, 149, 0.8)';
@@ -12,8 +12,8 @@ const getColor = (i) =>{
   const colors = [color1, color2, color3, color4, color5];
   return colors[i % colors.length];
 };
-const BLACK = 'black';
 
+const BLACK = 'black';
 const WIDTH = 500;
 const HEIGHT = 500;
 const RADIUS = 50;
@@ -56,10 +56,12 @@ const line = (x1, y1, x2, y2) => {
 const draw = (state) => {
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
   base();
-  const from = [0, state.trackLength];
+  const from = [0, state.loopLength];
   const to = [-Math.PI / 2, 1.5 * Math.PI];
   state.tracks.forEach((tr, i) => {
-    track(i, mapRange(from, to, tr.start), mapRange(from, to, tr.start + tr.duration));
+    const start = mapRange(from, to, tr.start);
+    const end = mapRange(from, to, tr.duration ? tr.start + tr.duration : state.currentPosition);
+    track(i, start, end);
   });
   const angle = mapRange(from, to, state.currentPosition);
 
