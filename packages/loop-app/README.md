@@ -7,6 +7,7 @@
 - [ ] responsive canvas
 - [x] play through
 - [ ] remove tracks
+- [ ] different recording state
 
 https://codepen.io/jamesseanwright/pen/jrmayRv
 

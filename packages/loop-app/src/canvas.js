@@ -16,7 +16,7 @@ const getColor = (i) =>{
 const BLACK = 'black';
 const WIDTH = 500;
 const HEIGHT = 500;
-const RADIUS = 50;
+const RADIUS = 10;
 const TRACK_WEIGHT = 20;
 const EMPTY_WEIGHT = 20;
 const LINE_LENGTH = 500;
@@ -60,7 +60,7 @@ const draw = (state) => {
   const to = [-Math.PI / 2, 1.5 * Math.PI];
   state.tracks.forEach((tr, i) => {
     const start = mapRange(from, to, tr.start);
-    const end = mapRange(from, to, tr.duration ? tr.start + tr.duration : state.currentPosition);
+    const end = mapRange(from, to, tr.end !== undefined ? tr.end : state.currentPosition);
     track(i, start, end);
   });
   const angle = mapRange(from, to, state.currentPosition);
