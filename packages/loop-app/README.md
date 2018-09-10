@@ -2,14 +2,11 @@
 
 ## to do
 
-- make scheduler just return a schedule or have a loop, so that we can
-actually unschedule things later if needed
-- drawing things would require knowing the buffers!
-- mic selector
-- no jump
-- responsive canvas
-- play through
-- remove tracks
+- [ ] mic selector
+- [x] no jump
+- [ ] responsive canvas
+- [x] play through
+- [ ] remove tracks
 
 https://codepen.io/jamesseanwright/pen/jrmayRv
 

@@ -4,14 +4,16 @@ const reducer = (state = {}, action) => {
   switch (action.type) {
     case 'UPDATE_CURRENT_POSITION':
       const positionChange = 1 / 60;
-      return Object.assign({}, state, {currentPosition: state.currentPosition + positionChange});
+      return Object.assign({}, state, {currentPosition: (state.currentPosition + positionChange) % state.loopLength});
     case 'START_RECORD':
       const startedTrack = {start: state.currentPosition};
       return Object.assign({}, state, {tracks: [...state.tracks, startedTrack]});
     case 'FINISH_RECORD':
+      console.log(action.record.buffer.duration, state.currentPosition)
+      const start = state.tracks[state.tracks.length - 1].start;
       const finishedTrack = {
-        start: state.tracks[state.tracks.length - 1].start,
-        duration: action.record.buffer.duration * state.loopLength / 10,
+        start: start,
+        end: start + action.record.buffer.duration, //|| state.currentPosition,
         audioBuffer: action.record.buffer
       };
       return Object.assign({}, state, {tracks: [...state.tracks.slice(0, -1), finishedTrack]});
