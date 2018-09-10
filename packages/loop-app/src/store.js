@@ -22,7 +22,7 @@ const reducer = (state = {}, action) => {
 
 const initialState = {
   //in seconds
-  loopLength: 10,
+  loopLength: 5,
   tracks: [],
   currentPosition: 0
 };

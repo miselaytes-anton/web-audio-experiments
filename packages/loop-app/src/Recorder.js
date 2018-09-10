@@ -7,12 +7,9 @@ const dataToArrayBuffer = data => {
 };
 
 class Recorder {
-  constructor(audioContext) {
+  constructor(audioContext, sourceStream) {
     this.audioContext = audioContext;
-    navigator.mediaDevices.getUserMedia({audio: true})
-    .then((sourceStream)=> {
-      this.mediaRecorder = new MediaRecorder(sourceStream);
-    });
+    this.mediaRecorder = new MediaRecorder(sourceStream);
   }
 
   start() {
