@@ -9,22 +9,24 @@ const reducer = (state = {}, action) => {
       const startedTrack = {start: state.currentPosition};
       return Object.assign({}, state, {tracks: [...state.tracks, startedTrack]});
     case 'FINISH_RECORD':
-      console.log(action.record.buffer.duration, state.currentPosition)
       const start = state.tracks[state.tracks.length - 1].start;
       const finishedTrack = {
         start: start,
-        end: start + action.record.buffer.duration, //|| state.currentPosition,
+        end: start + action.record.buffer.duration,
         audioBuffer: action.record.buffer
       };
-      return Object.assign({}, state, {tracks: [...state.tracks.slice(0, -1), finishedTrack]});
+      // if its the first recorded track - lets reset the global loop length to it
+      const loopLength = state.tracks.length === 1 ? finishedTrack.end - finishedTrack.start : state.loopLength;
+      return Object.assign({}, state, {tracks: [...state.tracks.slice(0, -1), finishedTrack]}, {loopLength});
     default:
       return state;
   }
 };
 
 const initialState = {
-  //in seconds
-  loopLength: 5,
+  // in seconds
+  // lets make it very high so we have enough time for the first track
+  loopLength: 30,
   tracks: [],
   currentPosition: 0
 };

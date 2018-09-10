@@ -40,7 +40,13 @@ const init = sourceStream => {
   };
   window.requestAnimationFrame(updateCurrentPosition);
 
-  store.subscribe(() => draw(store.getState()));
+  store.subscribe(() => {
+    const state = store.getState()
+    draw(state);
+    if (scheduler.loopLength !== state.loopLength) {
+      scheduler.loopLength = state.loopLength;
+    }
+  });
 };
 
 navigator.mediaDevices.getUserMedia({audio: true})

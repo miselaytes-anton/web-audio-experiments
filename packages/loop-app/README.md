@@ -8,6 +8,9 @@
 - [x] play through
 - [ ] remove tracks
 - [ ] different recording state
+- [ ] only show fill in places where there is audio, silence should be white(?)
+- [ ] think what should happen when consequent loops are longer then the base loop
+
 
 https://codepen.io/jamesseanwright/pen/jrmayRv
 
