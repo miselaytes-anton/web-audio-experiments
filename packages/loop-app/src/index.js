@@ -41,7 +41,7 @@ const init = sourceStream => {
   window.requestAnimationFrame(updateCurrentPosition);
 
   store.subscribe(() => {
-    const state = store.getState()
+    const state = store.getState();
     draw(state);
     if (scheduler.loopLength !== state.loopLength) {
       scheduler.loopLength = state.loopLength;
@@ -49,5 +49,9 @@ const init = sourceStream => {
   });
 };
 
-navigator.mediaDevices.getUserMedia({audio: true})
+navigator.mediaDevices.getUserMedia({audio: {
+  autoGainControl: false,
+  echoCancellation: false,
+  noiseSuppression: false,
+}})
 .then(init);
