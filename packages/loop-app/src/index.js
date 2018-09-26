@@ -2,33 +2,44 @@ const Recorder = require('./Recorder');
 const Scheduler = require('./Scheduler');
 const {draw} = require('./canvas');
 const store = require('./store');
+const finishedTracks = tracks => tracks.filter(track => track.end);
+
+let STATE = store.getState();
 
 const init = sourceStream => {
   const recordButton = document.querySelector('#record');
   const audioContext = new AudioContext();
   const recorder = new Recorder(audioContext, sourceStream);
-  const scheduler = new Scheduler(audioContext, store.getState().loopLength);
+  const scheduler = new Scheduler(audioContext, STATE.loopLength);
 
   const mediaSourceStream = audioContext.createMediaStreamSource(sourceStream);
   mediaSourceStream.connect(audioContext.destination);
   recordButton.onclick = () => {
-    if (!recorder.isRecording()) {
-      recorder.start();
-      store.dispatch({
-        type: 'START_RECORD'
+    if (!STATE.isRecording) {
+      recorder.start().then(startTime => {
+        store.dispatch({
+          type: 'START_RECORD',
+          startTime
+        });
       });
     } else {
-      recorder.stop();
-      recorder.getRecord().then(record => {
+      recorder.stop().then(buffer => {
         store.dispatch({
           type: 'FINISH_RECORD',
-          record
+          buffer
         });
-        scheduler.schedule(record);
       });
     }
+  };
 
-    recordButton.innerHTML = recorder.isRecording() ? 'Stop' : 'Record';
+  document.onkeyup = e => {
+    const key = e.which || e.keyCode;
+    const d = 68;
+    if (e.ctrlKey && key === d) {
+      store.dispatch({
+        type: 'DELETE_LAST_TRACK'
+      });
+    }
   };
 
   const updateCurrentPosition = () => {
@@ -41,11 +52,18 @@ const init = sourceStream => {
   window.requestAnimationFrame(updateCurrentPosition);
 
   store.subscribe(() => {
-    const state = store.getState();
-    draw(state);
-    if (scheduler.loopLength !== state.loopLength) {
-      scheduler.loopLength = state.loopLength;
+    const newState = store.getState();
+    draw(newState);
+    if (scheduler.loopLength !== newState.loopLength) {
+      scheduler.loopLength = newState.loopLength;
     }
+    if (finishedTracks(newState.tracks).length !== finishedTracks(STATE.tracks).length) {
+      scheduler.update(finishedTracks(newState.tracks));
+    }
+    if (STATE.isRecording !== newState.isRecording) {
+      recordButton.innerHTML = newState.isRecording ? 'Stop' : 'Record';
+    }
+    STATE = newState;
   });
 };
 

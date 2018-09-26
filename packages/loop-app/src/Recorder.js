@@ -15,30 +15,23 @@ class Recorder {
   start() {
     const {mediaRecorder, audioContext} = this;
     const data = [];
-    let startTime;
-
-    this.mediaRecorder.onstart = () => {
-      startTime = audioContext.currentTime;
-    };
-    this.mediaRecorder.ondataavailable = e => e.data.size && data.push(e.data);
+    mediaRecorder.ondataavailable = e => e.data.size && data.push(e.data);
     this.recordPromise = new Promise((resolve, reject) => {
-      this.mediaRecorder.onstop = () => dataToArrayBuffer(data)
+      mediaRecorder.onstop = () => dataToArrayBuffer(data)
       .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
-      .then(buffer => resolve({buffer, startTime}));
-      this.mediaRecorder.onerror = reject;
+      .then(buffer => resolve(buffer));
+      mediaRecorder.onerror = reject;
     });
     mediaRecorder.start();
+    return new Promise((resolve) => {
+      mediaRecorder.onstart = () => {
+        resolve(audioContext.currentTime);
+      };
+    });
   }
 
   stop() {
     this.mediaRecorder.stop();
-  }
-
-  isRecording() {
-    return this.mediaRecorder.state === 'recording';
-  }
-
-  getRecord() {
     return this.recordPromise;
   }
 }
