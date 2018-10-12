@@ -2,18 +2,29 @@
   "name": "loop-app",
   "version": "0.0.1",
   "scripts": {
-    "build": "rm -rf build && npx browserify src/index.js -o build/bundle.js && cp -R public/** build",
-    "start": "serve build",
-    "watch": "npx watchify src/index.js -o build/bundle.js"
+    "build": "NODE_ENV=production webpack",
+    "watch": "webpack --watch",
+    "start": "webpack-dev-server --open --https"
   },
-  "dependencies": {},
+  "dependencies": {
+    "redux": "^4.0.0"
+  },
   "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
     "babel-eslint": "^8.2.3",
-    "browserify": "^16.2.2",
+    "babel-loader": "^8.0.4",
+    "clean-webpack-plugin": "^0.1.19",
+    "css-loader": "^1.0.0",
     "eslint": "^4.19.1",
     "eslint-config-standard-react": "^6.0.0",
     "eslint-config-warp": "^2.1.1",
-    "serve": "10.0.0",
-    "watchify": "^3.11.0"
+    "html-webpack-plugin": "^3.2.0",
+    "node-sass": "^4.9.3",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.9"
   }
 }

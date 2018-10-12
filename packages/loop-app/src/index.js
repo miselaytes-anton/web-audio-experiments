@@ -1,3 +1,4 @@
+import './style.scss';
 const Recorder = require('./Recorder');
 const Scheduler = require('./Scheduler');
 const {draw} = require('./canvas');
