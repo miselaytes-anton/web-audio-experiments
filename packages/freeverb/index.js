@@ -1,11 +1,9 @@
-'use strict';
-
 const {CompositeAudioNode, mergeParams} = require('web-audio-utils');
 const LowpassCombFilter = require('low-pass-comb-filter');
 
 // Freeverb params defined by Mr. Shroeder
 const SAMPLE_RATE = 44100;
-const COMB_FILTER_TUNINGS = [1557, 1617, 1491, 1422, 1277, 1356, 1188, 1116]
+const COMB_FILTER_TUNINGS = [1557, 1617, 1491, 1422, 1277, 1356, 1188, 1116];
 const ALLPASS_FREQUENCES = [225, 556, 441, 341];
 
 const getAllPass = (audioCtx, freq) => {
@@ -13,7 +11,7 @@ const getAllPass = (audioCtx, freq) => {
   allPass.type = 'allpass';
   allPass.frequency.value = freq;
   return allPass;
-}
+};
 
 module.exports = class Freeverb extends CompositeAudioNode {
 

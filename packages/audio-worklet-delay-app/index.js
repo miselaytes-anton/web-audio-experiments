@@ -1,4 +1,3 @@
-'use strict';
 
 //https://googlechromelabs.github.io/web-audio-samples/audio-worklet/
 const {getLiveAudio} = require('web-audio-utils');

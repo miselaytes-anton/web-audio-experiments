@@ -1,5 +1,3 @@
-'use strict';
-
 const Freeverb = require('freeverb');
 const {getLiveAudio} = require('web-audio-utils');
 const initUi = require('./ui').init;
@@ -13,7 +11,7 @@ const getMasterGain = (audioCtx) => {
   masterGain.connect(audioCtx.destination);
 
   return masterGain;
-}
+};
 
 const master = getMasterGain(audioCtx);
 const freeverb = new Freeverb(audioCtx, defaults);
@@ -27,6 +25,6 @@ getLiveAudio(audioCtx).then(liveIn => {
 
 const turnon = () => {
   audioCtx.resume();
-}
+};
 
 module.exports = {turnon};
