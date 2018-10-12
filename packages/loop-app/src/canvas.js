@@ -2,18 +2,9 @@ const {mapRange} = require('./util');
 
 const canvas = document.getElementById('the-canvas');
 const ctx = canvas.getContext('2d');
-const getColor = (i) =>{
-  const color1 = 'rgba(52, 89, 149, 0.8)';
-  const color2 = 'rgba(3, 206, 164, 0.8)';
-  const color3 = 'rgba(255, 159, 28, 0.8)';
-  const color4 = 'rgba(251, 77, 61, 0.8)';
-  const color5 = 'rgba(202, 21, 81, 0.8)';
 
-  const colors = [color1, color2, color3, color4, color5];
-  return colors[i % colors.length];
-};
-
-const BLACK = 'black';
+const RED = 'red';
+const BLACK = 'rgba(24, 24, 24, 0.8)';
 const WIDTH = 500;
 const HEIGHT = 500;
 const RADIUS = 10;
@@ -21,8 +12,19 @@ const TRACK_WEIGHT = 20;
 const EMPTY_WEIGHT = 20;
 const LINE_LENGTH = 500;
 
-const base = () => {
-  ctx.fillStyle = getColor(0);
+const getColor = (i) =>{
+  const colors = [
+    'rgba(253, 197, 245, 1)',
+    'rgba(247, 174, 248, 1)',
+    'rgba(179, 136, 235, 1)',
+    'rgba(128, 147, 241, 1)',
+    'rgba(133, 224, 247, 1)',
+  ];
+  return colors[i % colors.length];
+};
+
+const base = (fillStyle) => {
+  ctx.fillStyle = fillStyle;
   ctx.beginPath();
   ctx.arc(WIDTH / 2, HEIGHT / 2, RADIUS, 0, 2 * Math.PI);
   ctx.fill();
@@ -39,9 +41,9 @@ const track = (trackNum, start, end) => {
   ctx.closePath();
 };
 
-const line = (x1, y1, x2, y2) => {
+const line = (x1, y1, x2, y2, strokeStyle) => {
   ctx.save();
-  ctx.strokeStyle = BLACK;
+  ctx.strokeStyle = strokeStyle;
   ctx.setLineDash([4, 4]);
   ctx.lineDashOffset = 1;
   ctx.lineWidth = 1;
@@ -55,7 +57,7 @@ const line = (x1, y1, x2, y2) => {
 
 const draw = (state) => {
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
-  base();
+  base(state.isRecording ? RED : BLACK);
   const from = [0, state.loopLength];
   const to = [-Math.PI / 2, 1.5 * Math.PI];
   state.tracks.forEach((tr, i) => {
@@ -65,7 +67,13 @@ const draw = (state) => {
   });
   const angle = mapRange(from, to, state.currentPosition);
 
-  line(WIDTH / 2, HEIGHT / 2, WIDTH / 2 + Math.cos(angle) * LINE_LENGTH / 2, HEIGHT / 2 + Math.sin(angle) * LINE_LENGTH / 2);
+  line(
+    WIDTH / 2,
+    HEIGHT / 2,
+    WIDTH / 2 + Math.cos(angle) * LINE_LENGTH / 2,
+    HEIGHT / 2 + Math.sin(angle) * LINE_LENGTH / 2,
+    state.isRecording ? RED : BLACK
+  );
 };
 
 module.exports = {draw};
