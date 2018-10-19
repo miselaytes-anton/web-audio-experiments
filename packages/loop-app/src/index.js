@@ -13,17 +13,29 @@ const init = sourceStream => {
   const scheduler = new Scheduler(audioContext, STATE.loopLength);
 
   const mediaSourceStream = audioContext.createMediaStreamSource(sourceStream);
-  mediaSourceStream.connect(audioContext.destination);
+  const checkbox = document.getElementById('playthrough');
+  checkbox.onchange = () => {
+    if (checkbox.checked) {
+      mediaSourceStream.connect(audioContext.destination);
+    } else {
+      mediaSourceStream.disconnect(audioContext.destination);
+    }
+  };
 
-  document.onkeyup = e => {
+  document.onkeydown = e => {
     const key = e.which || e.keyCode;
-    const d = 68;
-    const space = 32;
-    if (e.ctrlKey && key === d) {
+    const keys = {
+      d: 68,
+      space: 32
+    };
+
+    if (e.ctrlKey && key === keys.d) {
       store.dispatch({
         type: 'DELETE_LAST_TRACK'
       });
-    } else if (key === space) {
+    } else if (key === keys.space) {
+      e.stopPropagation();
+      e.preventDefault();
       if (!STATE.isRecording) {
         recorder.start().then(startTime => {
           store.dispatch({
