@@ -1,3 +1,6 @@
+const STOP_RECORDING_LATENCY = 0.4;
+const START_RECORDING_LATENCY = 0.4;
+
 class Scheduler {
   constructor(audioContext, loopLength) {
     this.audioContext = audioContext;
@@ -11,7 +14,7 @@ class Scheduler {
       nodes[id] = audioContext.createBufferSource();
       nodes[id].buffer = buffer;
       nodes[id].connect(audioContext.destination);
-      nodes[id].start(startTime);
+      nodes[id].start(startTime, START_RECORDING_LATENCY, buffer.duration - STOP_RECORDING_LATENCY);
       nodes[id].onended = () => {
         _schedule(buffer, startTime + loopLength, false);
       };
