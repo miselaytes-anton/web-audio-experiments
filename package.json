@@ -3,7 +3,11 @@
 		"eslint": "^5.7.0",
 		"eslint-config-standard-react": "^7.0.2",
 		"eslint-config-warp": "^3.0.0",
+		"eslint-plugin-react": "^7.11.1",
 		"lerna": "^2.11.0"
 	},
-	"dependencies": {}
+	"dependencies": {},
+	"scripts": {
+		"build": "lerna exec 'npm run build'"
+	}
 }
