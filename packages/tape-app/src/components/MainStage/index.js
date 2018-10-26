@@ -3,7 +3,7 @@ import ReadHead from '../ReadHead';
 import WriteHead from '../WriteHead';
 import Tape from '../Tape';
 import Knob from '../Knob';
-import {Arrow, Circle} from 'react-konva';
+import {Arrow, Circle, Text} from 'react-konva';
 import {Stage, Layer} from 'react-konva';
 
 const W = window.innerWidth;
@@ -23,11 +23,19 @@ class MainStage extends Component {
     tapeCircle1Y: H / 8 * 7,
     tapeCircle2X: W / 8 * 7,
     tapeCircle2Y: H / 8 * 7,
+    tapeKnobX:  W / 8,
+    tapeKnobY: H / 8 * 6 - 10,
   };
   handleReadHeadDragEnd = e => {
     this.setState({
       readHeadX: e.target.x(),
     });
+  };
+  handleKnobDragEnd = value => {
+    // this.setState({
+    //   readHeadX: e.target.x(),
+    // });
+    console.log(value)
   };
   render() {
     const {
@@ -42,12 +50,22 @@ class MainStage extends Component {
       tapeCircle1X,
       tapeCircle1Y,
       tapeCircle2X,
-      tapeCircle2Y
+      tapeCircle2Y,
+      tapeKnobX,
+      tapeKnobY
     } = this.state;
     return (
       <Stage width={W} height={H}>
         <Layer>
-          <Knob x={W / 2} y={H / 2} />
+          <Knob
+            x={tapeKnobX}
+            y={tapeKnobY}
+            r={25}
+            fromValue={0}
+            toValue={10}
+            handleDragEnd={this.handleKnobDragEnd}
+            label="TAPE SPEED"
+          />
           <Circle fill="black" radius={10} x={inJointX} y={inJointY} />
           <Circle fill="black" radius={10} x={outJointX} y={outJointY} />
           <Arrow fill="black" stroke="black" points={[inJointX, inJointY, outJointX - 10, outJointY]} />
