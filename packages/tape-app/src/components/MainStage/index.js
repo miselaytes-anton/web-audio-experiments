@@ -25,17 +25,17 @@ class MainStage extends Component {
     tapeCircle2Y: H / 8 * 7,
     tapeKnobX:  W / 8,
     tapeKnobY: H / 8 * 6 - 10,
+    tapeSpeed: 10
   };
   handleReadHeadDragEnd = e => {
     this.setState({
       readHeadX: e.target.x(),
     });
   };
-  handleKnobDragEnd = value => {
-    // this.setState({
-    //   readHeadX: e.target.x(),
-    // });
-    console.log(value)
+  handleTapeSpeedKnobTurn = value => {
+    this.setState({
+      tapeSpeed: value
+    });
   };
   render() {
     const {
@@ -52,7 +52,8 @@ class MainStage extends Component {
       tapeCircle2X,
       tapeCircle2Y,
       tapeKnobX,
-      tapeKnobY
+      tapeKnobY,
+      tapeSpeed
     } = this.state;
     return (
       <Stage width={W} height={H}>
@@ -62,8 +63,9 @@ class MainStage extends Component {
             y={tapeKnobY}
             r={25}
             fromValue={0}
-            toValue={10}
-            handleDragEnd={this.handleKnobDragEnd}
+            toValue={20}
+            value={tapeSpeed}
+            handleKnobTurn={this.handleTapeSpeedKnobTurn}
             label="TAPE SPEED"
           />
           <Circle fill="black" radius={10} x={inJointX} y={inJointY} />
@@ -73,7 +75,7 @@ class MainStage extends Component {
           <Arrow fill="black" stroke="black" points={[readHeadX, readHeadY, outJointX, outJointY + 10]} />
           <WriteHead x={writeHeadX} y={writeHeadY} />
           <ReadHead x={readHeadX} y={readHeadY} handleDragEnd={this.handleReadHeadDragEnd} />
-          <Tape x1={tapeCircle1X} y1={tapeCircle1Y} x2={tapeCircle2X} y2={tapeCircle2Y} />
+          <Tape x1={tapeCircle1X} y1={tapeCircle1Y} x2={tapeCircle2X} y2={tapeCircle2Y} speed={tapeSpeed} />
         </Layer>
       </Stage>
     );

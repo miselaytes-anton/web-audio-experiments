@@ -1,5 +1,6 @@
 {
 	"devDependencies": {
+		"babel-eslint": "^10.0.1",
 		"eslint": "^5.7.0",
 		"eslint-config-standard-react": "^7.0.2",
 		"eslint-config-warp": "^3.0.0",
