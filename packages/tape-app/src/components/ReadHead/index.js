@@ -1,7 +1,6 @@
 import React from 'react';
-import {Rect} from 'react-konva';
+import {Line} from 'react-konva';
 import PropTypes from 'prop-types';
-
 class ReadHead extends React.Component {
   static propTypes = {
     x: PropTypes.number.isRequired,
@@ -11,16 +10,20 @@ class ReadHead extends React.Component {
   render() {
     const {x, y, handleDragEnd} = this.props;
     const dragBoundFunc = pos => ({x: pos.x, y});
+    const w = 30;
+    const h = 30;
+    const headPoly = (x, y, w, h) =>
+      [x - w / 2, y - h / 2, x + w / 2, y - h / 2, x + w / 2, y, x + w / 3, y + h / 2, x - w / 3, y + h / 2, x - w / 2, y];
     return (
-      <Rect
-        x={x - 15}
+      <Line
+        x={x}
         y={y}
-        width={30}
-        height={30}
         fill={'black'}
+        closed="true"
+        points={headPoly(0, 0, w, h)}
         draggable
-        onDragMove={handleDragEnd}
-        onDragEnd={handleDragEnd}
+        onDragMove={e => handleDragEnd(e.target.x() + e.target.offsetX())}
+        onDragEnd={e => handleDragEnd(e.target.x() + e.target.offsetX())}
         dragBoundFunc={dragBoundFunc}
       />
     );

@@ -56,7 +56,7 @@ const Knob = ({x, y, fromValue, toValue, handleKnobTurn, r: R, label, value}) =>
       })}
       onDragEnd={handleDragEnd}
     />
-    <Text x={x - 35} y={y + R + 10} text={label} />
+    <Text x={x - label.length * 3.5} y={y + R + 10} text={label} />
   </React.Fragment>;
 };
 Knob.propTypes = {
