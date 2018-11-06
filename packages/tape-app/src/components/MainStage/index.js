@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import ReadHead from '../ReadHead';
 import WriteHead from '../WriteHead';
 import Tape from '../Tape';
-import Knob from '../Knob';
+import FeedbackKnob from '../FeedbackKnob';
 import {Arrow, Circle} from 'react-konva';
 import {Stage, Layer} from 'react-konva';
 
@@ -42,11 +42,6 @@ class MainStage extends Component {
       readHeadX: x,
     });
   };
-  handleTapeSpeedKnobTurn = value => {
-    this.setState({
-      tapeSpeed: value
-    });
-  };
 
   handleFeedbackKnobTurn = value => {
     this.setState({
@@ -68,13 +63,8 @@ class MainStage extends Component {
       tapeCircle2X,
       tapeCircle2Y,
 
-      tapeKnobX,
-      tapeKnobY,
-      tapeSpeed,
-
       feedbackKnobX,
       feedbackKnobY,
-      feedbackAmount,
 
       feedbackInJountX,
       feedbackInJountY,
@@ -98,27 +88,8 @@ class MainStage extends Component {
 
           <WriteHead x={writeHeadX} y={writeHeadY} />
           <ReadHead x={readHeadX} y={readHeadY} handleDragEnd={this.handleReadHeadDragEnd} />
-          <Tape x1={tapeCircle1X} y1={tapeCircle1Y} x2={tapeCircle2X} y2={tapeCircle2Y} speed={tapeSpeed} />
-          <Knob
-            x={feedbackKnobX}
-            y={feedbackKnobY}
-            r={25}
-            fromValue={0}
-            toValue={20}
-            value={feedbackAmount}
-            handleKnobTurn={this.handleFeedbackKnobTurn}
-            label="FEEDBACK"
-          />
-          <Knob
-            x={tapeKnobX}
-            y={tapeKnobY}
-            r={25}
-            fromValue={0}
-            toValue={20}
-            value={tapeSpeed}
-            handleKnobTurn={this.handleTapeSpeedKnobTurn}
-            label="TAPE SPEED"
-          />
+          <Tape x1={tapeCircle1X} y1={tapeCircle1Y} x2={tapeCircle2X} y2={tapeCircle2Y} />
+          <FeedbackKnob x={feedbackKnobX} y={feedbackKnobY} />
         </Layer>
       </Stage>
     );
