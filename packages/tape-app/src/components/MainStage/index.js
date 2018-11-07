@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import ReadHead from '../ReadHead';
-import WriteHead from '../WriteHead';
+import Head from '../Head';
 import Tape from '../Tape';
 import FeedbackKnob from '../FeedbackKnob';
+import Reader1 from '../Reader';
+
 import {Arrow, Circle} from 'react-konva';
 import {Stage, Layer} from 'react-konva';
 
@@ -19,7 +20,6 @@ class MainStage extends Component {
     feedbackInJountY: H / 8 * 3,
     feedbackOutJountX: W / 4 * 3,
     feedbackOutJountY: H / 8 * 3,
-
     writeHeadX: W / 4,
     writeHeadY: H / 4 * 3 + 25,
     readHeadX: W / 4 * 3,
@@ -28,33 +28,20 @@ class MainStage extends Component {
     tapeCircle1Y: H / 8 * 7,
     tapeCircle2X: W / 8 * 7,
     tapeCircle2Y: H / 8 * 7,
-
     tapeKnobX:  W / 8,
     tapeKnobY: H / 8 * 6 - 10,
     tapeSpeed: 10,
-
     feedbackKnobX: W / 2,
     feedbackKnobY: H / 8 * 3,
     feedbackAmount: 10
   };
-  handleReadHeadDragEnd = x => {
-    this.setState({
-      readHeadX: x,
-    });
-  };
 
-  handleFeedbackKnobTurn = value => {
-    this.setState({
-      feedbackAmount: value
-    });
-  };
   render() {
     const {
       inJointX,
       inJointY,
       outJointX,
       outJointY,
-      readHeadX,
       readHeadY,
       writeHeadX,
       writeHeadY,
@@ -62,10 +49,8 @@ class MainStage extends Component {
       tapeCircle1Y,
       tapeCircle2X,
       tapeCircle2Y,
-
       feedbackKnobX,
       feedbackKnobY,
-
       feedbackInJountX,
       feedbackInJountY,
       feedbackOutJountX,
@@ -78,16 +63,22 @@ class MainStage extends Component {
           <Circle fill="black" radius={10} x={outJointX} y={outJointY} />
           <Circle fill="black" radius={10} x={feedbackInJountX} y={feedbackInJountY} />
           <Circle fill="black" radius={10} x={feedbackOutJountX} y={feedbackOutJountY} />
-          <Arrow fill="black" stroke="black" points={[inJointX, inJointY, writeHeadX, writeHeadY - 15]} />
           <Arrow fill="black" stroke="black" points={[inJointX, inJointY, outJointX - 10, outJointY]} />
-
           <Arrow fill="black" stroke="black" points={[feedbackOutJountX, feedbackOutJountY, outJointX, outJointY + 10]} />
-          <Arrow fill="black" stroke="black" points={[readHeadX, readHeadY, feedbackOutJountX, feedbackOutJountY + 10]} />
-
           <Arrow fill="black" stroke="black" points={[feedbackOutJountX, feedbackOutJountY, feedbackInJountX + 10, feedbackInJountY]} />
 
-          <WriteHead x={writeHeadX} y={writeHeadY} />
-          <ReadHead x={readHeadX} y={readHeadY} handleDragEnd={this.handleReadHeadDragEnd} />
+          <Arrow fill="black" stroke="black" points={[inJointX, inJointY, writeHeadX, writeHeadY - 15]} />
+          <Head x={writeHeadX} y={writeHeadY} />
+
+          <Reader1
+            wireEndX={feedbackOutJountX}
+            wireEndY={feedbackOutJountY + 10}
+            readerHeadY={readHeadY}
+            readerHeadMinX={writeHeadX}
+            readerHeadMaxX={feedbackOutJountX}
+            fromValue={0}
+            toValue={20}
+          />
           <Tape x1={tapeCircle1X} y1={tapeCircle1Y} x2={tapeCircle2X} y2={tapeCircle2Y} />
           <FeedbackKnob x={feedbackKnobX} y={feedbackKnobY} />
         </Layer>

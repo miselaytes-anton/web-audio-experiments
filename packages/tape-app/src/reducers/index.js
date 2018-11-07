@@ -10,6 +10,11 @@ const tapeApp = (state, action) => {
         ...state,
         feedbackAmount: action.value
       };
+    case 'CHANGE_READER_POSITION_1':
+      return {
+        ...state,
+        reader1Position: action.value
+      };
     default:
       return state;
   }

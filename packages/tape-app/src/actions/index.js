@@ -12,3 +12,10 @@ export const changeFeedback = (value) => {
   };
 };
 
+export const changeReaderPosition = (value, reader) => {
+  return {
+    type: `CHANGE_READER_POSITION_${reader}`,
+    value,
+  };
+};
+
