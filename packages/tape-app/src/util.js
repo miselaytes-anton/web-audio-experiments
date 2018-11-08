@@ -22,3 +22,6 @@ export const rotate = (rotateAngle, angle) => {
 
 export const normCoord = ([centerX, centerY], [x, y], r) => [x - centerX, -(y - centerY)].map(coord => coord / r);
 export const denormCoord = ([centerX, centerY], [x, y], r) => [x * r + centerX, -y * r + centerY];
+
+export const clamp = ([min, max], value) => value < min ? min : (value > max ? max : value);
+

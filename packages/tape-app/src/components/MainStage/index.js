@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import Head from '../Head';
 import Tape from '../Tape';
-import FeedbackKnob from '../FeedbackKnob';
+import {FeedbackKnob, MixKnob, LowpassKnob} from '../Knobs';
 import Reader1 from '../Reader';
 
-import {Arrow, Circle} from 'react-konva';
+import {Arrow, Circle, Text} from 'react-konva';
 import {Stage, Layer} from 'react-konva';
 
 const W = window.innerWidth;
@@ -59,12 +59,18 @@ class MainStage extends Component {
     return (
       <Stage width={W} height={H}>
         <Layer>
+          <Text x={tapeCircle1X} y={inJointY - 20} text="AUDIO IN" />
+          <Arrow fill="black" stroke="black" points={[tapeCircle1X, inJointY, inJointX - 10, inJointY]} />
+
+          <Text x={tapeCircle2X - 65} y={outJointY - 20} text="AUDIO OUT" />
+          <Arrow fill="black" stroke="black" points={[outJointX, outJointY, tapeCircle2X, outJointY]} />
+
           <Circle fill="black" radius={10} x={inJointX} y={inJointY} />
-          <Circle fill="black" radius={10} x={outJointX} y={outJointY} />
+          <MixKnob x={outJointX} y={outJointY} toplabel="MIX" />
           <Circle fill="black" radius={10} x={feedbackInJountX} y={feedbackInJountY} />
-          <Circle fill="black" radius={10} x={feedbackOutJountX} y={feedbackOutJountY} />
-          <Arrow fill="black" stroke="black" points={[inJointX, inJointY, outJointX - 10, outJointY]} />
-          <Arrow fill="black" stroke="black" points={[feedbackOutJountX, feedbackOutJountY, outJointX, outJointY + 10]} />
+
+          <Arrow fill="black" stroke="black" points={[inJointX, inJointY, outJointX - 25, outJointY]} />
+          <Arrow fill="black" stroke="black" points={[feedbackOutJountX, feedbackOutJountY, outJointX, outJointY + 25]} />
           <Arrow fill="black" stroke="black" points={[feedbackOutJountX, feedbackOutJountY, feedbackInJountX + 10, feedbackInJountY]} />
 
           <Arrow fill="black" stroke="black" points={[inJointX, inJointY, writeHeadX, writeHeadY - 15]} />
@@ -72,15 +78,16 @@ class MainStage extends Component {
 
           <Reader1
             wireEndX={feedbackOutJountX}
-            wireEndY={feedbackOutJountY + 10}
+            wireEndY={feedbackOutJountY + 30}
             readerHeadY={readHeadY}
-            readerHeadMinX={writeHeadX}
+            readerHeadMinX={W / 2}
             readerHeadMaxX={feedbackOutJountX}
             fromValue={0}
             toValue={20}
           />
           <Tape x1={tapeCircle1X} y1={tapeCircle1Y} x2={tapeCircle2X} y2={tapeCircle2Y} />
-          <FeedbackKnob x={feedbackKnobX} y={feedbackKnobY} />
+          <FeedbackKnob x={feedbackKnobX} y={feedbackKnobY} bottomlabel="FEEDBACK" />
+          <LowpassKnob x={feedbackOutJountX} y={feedbackOutJountY} bottomlabel="LOWPASS" />
         </Layer>
       </Stage>
     );

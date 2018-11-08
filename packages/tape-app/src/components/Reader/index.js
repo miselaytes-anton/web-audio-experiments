@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {changeReaderPosition} from '../../actions';
+import {changeParamValue} from '../../actions';
 import ReadHead from '../ReadHead';
 import {Arrow} from 'react-konva';
 import {mapRange} from '../../util';
@@ -30,6 +30,8 @@ class Reader extends React.Component {
       <ReadHead
         x={readerHeadX}
         y={readerHeadY}
+        minX={readerHeadMinX}
+        maxX={readerHeadMaxX}
         handleDragEnd={x => onPositionChange(mapRange([readerHeadMinX, readerHeadMaxX], [fromValue, toValue], x))}
       />
 
@@ -40,7 +42,7 @@ class Reader extends React.Component {
 const Reader1 = connect(
   state => ({value: state.reader1Position}),
   dispatch => ({
-    onPositionChange: position => dispatch(changeReaderPosition(position, 1))
+    onPositionChange: value => dispatch(changeParamValue('reader_1_position', value))
   })
 )(Reader);
 

@@ -4,7 +4,7 @@ import TapeCircle from '../TapeCircle';
 import PropTypes from 'prop-types';
 import Knob from '../Knob';
 import {connect} from 'react-redux';
-import {changeSpeed} from '../../actions';
+import {changeParamValue} from '../../actions';
 
 const RADIUS = 35;
 
@@ -21,7 +21,7 @@ const Tape = ({x1, x2, y1, y2, tapeSpeed, onSpeedChange}) =>
       toValue={20}
       value={tapeSpeed}
       handleKnobTurn={onSpeedChange}
-      label="TAPE SPEED"
+      bottomlabel="TAPE SPEED"
     />
   </React.Fragment>;
 
@@ -37,6 +37,6 @@ Tape.propTypes = {
 export default connect(
   state => ({tapeSpeed: state.tapeSpeed}),
   dispatch => ({
-    onSpeedChange: value => dispatch(changeSpeed(value))
+    onSpeedChange: value => dispatch(changeParamValue('speed', value))
   })
 )(Tape);

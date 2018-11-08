@@ -1,20 +1,6 @@
-export const changeSpeed = (value) => {
+export const changeParamValue = (param, value) => {
   return {
-    type: 'CHANGE_SPEED',
-    value,
-  };
-};
-
-export const changeFeedback = (value) => {
-  return {
-    type: 'CHANGE_FEEDBACK',
-    value,
-  };
-};
-
-export const changeReaderPosition = (value, reader) => {
-  return {
-    type: `CHANGE_READER_POSITION_${reader}`,
+    type: `CHANGE_${param.toUpperCase()}`,
     value,
   };
 };

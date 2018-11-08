@@ -1,5 +1,5 @@
 import assert from 'assert';
-import {coordToAngle, angleToCoord, rotate, normCoord, denormCoord, mapRange} from './util';
+import {coordToAngle, angleToCoord, rotate, normCoord, denormCoord, mapRange, clamp} from './util';
 
 describe('util', () => {
   describe('coordToAngle', () => {
@@ -45,6 +45,14 @@ describe('util', () => {
     it('should mapRange', () => {
       assert.deepStrictEqual(mapRange([0, 10], [0, 1], 3), 0.3);
       assert.deepStrictEqual(mapRange([10, 0], [0, 1], 3), 0.7);
+    });
+  });
+
+  describe('clamp', () => {
+    it('should clamp', () => {
+      assert.deepStrictEqual(clamp([0, 10], -1), 0);
+      assert.deepStrictEqual(clamp([0,10], 5), 5);
+      assert.deepStrictEqual(clamp([0,10], 20), 10);
     });
   });
 });

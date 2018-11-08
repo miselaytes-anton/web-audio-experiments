@@ -10,7 +10,17 @@ const tapeApp = (state, action) => {
         ...state,
         feedbackAmount: action.value
       };
-    case 'CHANGE_READER_POSITION_1':
+    case 'CHANGE_MIX':
+      return {
+        ...state,
+        mix: action.value
+      };
+    case 'CHANGE_LOWPASS':
+      return {
+        ...state,
+        lowpass: action.value
+      };
+    case 'CHANGE_READER_1_POSITION':
       return {
         ...state,
         reader1Position: action.value

@@ -21,8 +21,8 @@ const dragBoundFunc = ({r, x, y, leftMarginAngle, rightMarginAngle}) => pos => {
   return {x: newX, y: newY};
 };
 const MARGIN = 40;
-
-const Knob = ({x, y, fromValue, toValue, handleKnobTurn, r: R, label, value}) => {
+const formatLabel = (label, value) => label ? `${label} ~ ${String(Math.round(value))}` : '';
+const Knob = ({x, y, fromValue = 0, toValue = 20, handleKnobTurn, r: R = 25, toplabel = '', bottomlabel = '', value}) => {
   const r = R * 0.6;
   const dotR = r / 5;
   const dotAngle = mapRange(
@@ -54,19 +54,31 @@ const Knob = ({x, y, fromValue, toValue, handleKnobTurn, r: R, label, value}) =>
         leftMarginAngle: 270 - MARGIN,
         rightMarginAngle: 270 + MARGIN,
       })}
+      onDragMove={handleDragEnd}
       onDragEnd={handleDragEnd}
     />
-    <Text x={x - label.length * 3.5} y={y + R + 10} text={label} />
+    <Text
+      x={x - bottomlabel.length * 4} y={y + R + 10}
+      text={formatLabel(bottomlabel, value)}
+    />
+    <Text
+      x={x - toplabel.length * 4}
+      y={y - R - 20}
+      text={formatLabel(toplabel, value)}
+    />
+
   </React.Fragment>;
 };
 Knob.propTypes = {
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
-  fromValue: PropTypes.number.isRequired,
-  toValue: PropTypes.number.isRequired,
+  fromValue: PropTypes.number,
+  toValue: PropTypes.number,
   handleKnobTurn: PropTypes.func.isRequired,
-  r: PropTypes.number.isRequired,
-  label: PropTypes.string.isRequired,
+  r: PropTypes.number,
+  toplabel: PropTypes.string,
+  bottomlabel: PropTypes.string,
+
 };
 export default Knob;
