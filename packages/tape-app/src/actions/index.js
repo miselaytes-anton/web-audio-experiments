@@ -19,3 +19,10 @@ export const changeReaderPosition = (value, reader) => {
   };
 };
 
+export const audioBufferLoaded = (audioBuffer) => {
+  return {
+    type: 'AUDIO_BUFFER_LOADED',
+    audioBuffer,
+  };
+};
+

@@ -37,6 +37,15 @@ module.exports = {
           // compiles Sass to CSS, using Node Sass by default
           'sass-loader'
         ]
+      },
+      {
+        test: /\.(mp3)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {}
+          }
+        ]
       }
     ]
   },

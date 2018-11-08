@@ -15,6 +15,12 @@ const tapeApp = (state, action) => {
         ...state,
         reader1Position: action.value
       };
+    case 'AUDIO_BUFFER_LOADED':
+      return {
+        ...state,
+        audioBuffer: action.audioBuffer
+      };
+
     default:
       return state;
   }
