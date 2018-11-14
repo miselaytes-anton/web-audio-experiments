@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import MainStage from '../MainStage';
 import Audio from '../Audio';
+import Footer from '../Footer';
 
 class App extends Component {
 
@@ -9,6 +10,8 @@ class App extends Component {
       <React.Fragment>
         <MainStage />
         <Audio />
+        <Footer />
+
       </React.Fragment>
     );
   }

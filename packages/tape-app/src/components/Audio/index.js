@@ -30,7 +30,8 @@ const paramsToGraph = ({tapeSpeed, feedbackAmount, reader1Position, audioBuffer,
     feedback: gain(['delay'], {gain: normFeedback(feedbackAmount)}),
     lowpass: biquadFilter(['feedback', 'wet'], {type: 'lowpass', frequency: normFrequency(lowpass)}),
     delay: delay('lowpass', {delayTime: normDelay(reader1Position)}),
-    bufferSource: bufferSource(['delay', 'dry'], {buffer: audioBuffer, loop: true, playbackRate: normSpeed(tapeSpeed)})
+    bufferSourceDry: bufferSource('dry', {buffer: audioBuffer, loop: true}),
+    bufferSourceWet: bufferSource('delay', {buffer: audioBuffer, loop: true, playbackRate: normSpeed(tapeSpeed)}),
   };
 };
 
