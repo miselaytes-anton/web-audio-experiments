@@ -8,7 +8,7 @@ import {Arrow, Circle, Text} from 'react-konva';
 import {Stage, Layer} from 'react-konva';
 
 const W = window.innerWidth;
-const H = window.innerHeight;
+const H = window.innerHeight - 50;
 
 class MainStage extends Component {
   state = {
@@ -21,9 +21,9 @@ class MainStage extends Component {
     feedbackOutJountX: W / 4 * 3,
     feedbackOutJountY: H / 8 * 3,
     writeHeadX: W / 4,
-    writeHeadY: H / 4 * 3 + 25,
+    writeHeadY: H / 4 * 3 + 15,
     readHeadX: W / 4 * 3,
-    readHeadY: H / 4 * 3 + 25,
+    readHeadY: H / 4 * 3 + 15,
     tapeCircle1X: W / 8,
     tapeCircle1Y: H / 8 * 7,
     tapeCircle2X: W / 8 * 7,
@@ -60,20 +60,20 @@ class MainStage extends Component {
       <Stage width={W} height={H}>
         <Layer>
           <Text x={tapeCircle1X} y={inJointY - 20} text="AUDIO IN" />
-          <Arrow fill="black" stroke="black" points={[tapeCircle1X, inJointY, inJointX - 10, inJointY]} />
+          <Arrow fill="black" stroke="black" points={[tapeCircle1X, inJointY, inJointX - 10, inJointY]} pointerWidth={7} />
 
           <Text x={tapeCircle2X - 65} y={outJointY - 20} text="AUDIO OUT" />
-          <Arrow fill="black" stroke="black" points={[outJointX, outJointY, tapeCircle2X, outJointY]} />
+          <Arrow fill="black" stroke="black" points={[outJointX, outJointY, tapeCircle2X, outJointY]} pointerWidth={7} />
 
-          <Circle fill="black" radius={10} x={inJointX} y={inJointY} />
+          <Circle fill="black" radius={5} x={inJointX} y={inJointY} />
           <MixKnob x={outJointX} y={outJointY} toplabel="MIX" />
-          <Circle fill="black" radius={10} x={feedbackInJountX} y={feedbackInJountY} />
+          <Circle fill="black" radius={5} x={feedbackInJountX} y={feedbackInJountY} />
 
-          <Arrow fill="black" stroke="black" points={[inJointX, inJointY, outJointX - 25, outJointY]} />
-          <Arrow fill="black" stroke="black" points={[feedbackOutJountX, feedbackOutJountY, outJointX, outJointY + 25]} />
-          <Arrow fill="black" stroke="black" points={[feedbackOutJountX, feedbackOutJountY, feedbackInJountX + 10, feedbackInJountY]} />
+          <Arrow fill="black" stroke="black" points={[inJointX, inJointY, outJointX - 25, outJointY]} pointerWidth={7} />
+          <Arrow fill="black" stroke="black" points={[feedbackOutJountX, feedbackOutJountY, outJointX, outJointY + 25]} pointerWidth={7} />
+          <Arrow fill="black" stroke="black" points={[feedbackOutJountX, feedbackOutJountY, feedbackInJountX + 10, feedbackInJountY]} pointerWidth={7} />
 
-          <Arrow fill="black" stroke="black" points={[inJointX, inJointY, writeHeadX, writeHeadY - 15]} />
+          <Arrow fill="black" stroke="black" points={[inJointX, inJointY, writeHeadX, writeHeadY - 15]} pointerWidth={7} />
           <Head x={writeHeadX} y={writeHeadY} />
 
           <Reader1

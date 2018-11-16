@@ -2,10 +2,8 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {getAudioBuffer} from 'web-audio-utils';
-import {mapRange} from '../../util';
+import {mapRange, randomTrack} from '../../util';
 import {audioBufferLoaded} from '../../actions';
-import tracks from '../../tracks.json';
-import {sample} from 'lodash';
 
 import createVirtualAudioGraph, {
   delay,
@@ -41,15 +39,13 @@ const virtualAudioGraph = createVirtualAudioGraph({
   output: audioContext.destination,
 });
 
-const baseUrl = 'https://amiselaytes.com/audio/';
-
 class Audio extends Component {
   static propTypes = {
     loadAudioSource: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
-    this.props.loadAudioSource(audioContext, `${baseUrl}${sample(tracks)}.mp3`);
+    this.props.loadAudioSource(audioContext, randomTrack());
   }
 
   render() {

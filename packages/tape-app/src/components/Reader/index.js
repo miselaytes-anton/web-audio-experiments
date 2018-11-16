@@ -26,12 +26,13 @@ class Reader extends React.Component {
     const {wireEndX, wireEndY, readerHeadY, readerHeadMinX, readerHeadMaxX, fromValue, toValue, value, onPositionChange} = this.props;
     const readerHeadX = mapRange([fromValue, toValue], [readerHeadMinX, readerHeadMaxX], value);
     return <React.Fragment>
-      <Arrow fill="black" stroke="black" points={[readerHeadX, readerHeadY, wireEndX, wireEndY]} />
+      <Arrow fill="black" stroke="black" points={[readerHeadX, readerHeadY, wireEndX, wireEndY]} pointerWidth={7} />
       <ReadHead
         x={readerHeadX}
         y={readerHeadY}
         minX={readerHeadMinX}
         maxX={readerHeadMaxX}
+        label={`DELAY ~ ${Math.round(value)}`}
         handleDragEnd={x => onPositionChange(mapRange([readerHeadMinX, readerHeadMaxX], [fromValue, toValue], x))}
       />
 
