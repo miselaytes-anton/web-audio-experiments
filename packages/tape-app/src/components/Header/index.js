@@ -25,22 +25,28 @@ const Button = styled.button`
 const Link = styled.a`
   color: black
 `;
+
 const audioContext = new AudioContext();
 
-const Header = ({loadAudioSource}) =>
+const Header = ({loadAudioSource, audioBuffer}) =>
   <div style={{display: 'flex', fontFamily: 'Helvetica,Arial,sans-serif', padding: '10px 50px', fontSize: '13px'}}>
-    <Button onClick={() => loadAudioSource(audioContext, randomTrack())} > Change track</Button>
-    <spam style={{marginLeft: 'auto', marginRight: `${window.innerWidth / 12}px`, padding: '10px 0'}}>
+    <Button onClick={() => {
+      audioContext.resume().then(() => {
+        loadAudioSource(audioContext, randomTrack());
+      });
+    }} > {audioBuffer ? 'CHANGE TRACK' : 'START'} </Button>
+    <span style={{marginLeft: 'auto', marginRight: `${window.innerWidth / 12}px`, padding: '10px 0'}}>
       <Link target="_blank" href="https://github.com/miselaytes-anton/web-audio-experiments/tree/master/packages/tape-app">GitHub </Link>
       |
       Tracks from <Link target="_blank"href="http://research.culturalequity.org/rc-b2/home-audio.jsp"> Alan Lomax Archive </Link>
       |
       Inspired by <Link target="_blank"href="https://www.bastl-instruments.com/instruments/thyme/"> Thyme </Link>
-    </spam>
+    </span>
   </div>;
 
 Header.propTypes = {
   loadAudioSource: PropTypes.func.isRequired,
+  audioBuffer: PropTypes.object,
 };
 export default connect(
   state => state,

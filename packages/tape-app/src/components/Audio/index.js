@@ -21,6 +21,9 @@ const normDry = mix => mapRange([0, 20], [1, 0], mix);
 const normWet = mix => mapRange([0, 20], [0, 1], mix);
 const normFrequency = lowpass => mapRange([0, 20], [16, 8000], lowpass);
 const paramsToGraph = ({tapeSpeed, feedbackAmount, reader1Position, audioBuffer, mix, lowpass}) => {
+  //ensure a new node is created each time
+  const bufferSourceDry = `bufferSourceDry${new Date().getTime()}`;
+  const bufferSourceWet = `bufferSourceWet${new Date().getTime()}`;
   return {
     master: gain('output', {gain: 0.7}),
     dry: gain('master', {gain: normDry(mix)}),
@@ -28,8 +31,8 @@ const paramsToGraph = ({tapeSpeed, feedbackAmount, reader1Position, audioBuffer,
     feedback: gain(['delay'], {gain: normFeedback(feedbackAmount)}),
     lowpass: biquadFilter(['feedback', 'wet'], {type: 'lowpass', frequency: normFrequency(lowpass)}),
     delay: delay('lowpass', {delayTime: normDelay(reader1Position)}),
-    bufferSourceDry: bufferSource('dry', {buffer: audioBuffer, loop: true}),
-    bufferSourceWet: bufferSource('delay', {buffer: audioBuffer, loop: true, playbackRate: normSpeed(tapeSpeed)}),
+    [bufferSourceDry]: bufferSource('dry', {buffer: audioBuffer, loop: true}),
+    [bufferSourceWet]: bufferSource('delay', {buffer: audioBuffer, loop: true, playbackRate: normSpeed(tapeSpeed)}),
   };
 };
 
@@ -43,10 +46,6 @@ class Audio extends Component {
   static propTypes = {
     loadAudioSource: PropTypes.func.isRequired,
   };
-
-  componentDidMount() {
-    this.props.loadAudioSource(audioContext, randomTrack());
-  }
 
   render() {
     virtualAudioGraph.update(paramsToGraph(this.props));
