@@ -5,5 +5,6 @@ export default {
   reader1Position: 10,
   mix: 10,
   lowpass: 20,
-  audioBuffer: null
+  audioBuffer: null,
+  trackIsLoading: false
 };

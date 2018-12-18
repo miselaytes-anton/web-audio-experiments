@@ -12,3 +12,9 @@ export const audioBufferLoaded = (audioBuffer) => {
   };
 };
 
+export const audioBufferLoading = () => {
+  return {
+    type: 'AUDIO_BUFFER_LOADING',
+  };
+};
+

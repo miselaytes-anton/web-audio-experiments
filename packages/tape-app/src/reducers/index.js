@@ -28,7 +28,13 @@ const tapeApp = (state, action) => {
     case 'AUDIO_BUFFER_LOADED':
       return {
         ...state,
-        audioBuffer: action.audioBuffer
+        audioBuffer: action.audioBuffer,
+        trackIsLoading: false
+      };
+    case 'AUDIO_BUFFER_LOADING':
+      return {
+        ...state,
+        trackIsLoading: true
       };
 
     default:
