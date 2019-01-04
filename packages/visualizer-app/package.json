@@ -1,0 +1,27 @@
+{
+  "name": "visualizer-app",
+  "version": "0.0.1",
+  "scripts": {
+    "test": "jest src/**.test.js",
+    "build": "NODE_ENV=production webpack",
+    "watch": "webpack --watch",
+    "start": "webpack-dev-server --open"
+  },
+  "dependencies": {
+    "meyda": "^4.2.0",
+    "web-audio-utils": "^0.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-eslint": "^8.2.6",
+    "babel-loader": "^8.0.4",
+    "clean-webpack-plugin": "^0.1.19",
+    "file-loader": "^2.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.9"
+  }
+}
