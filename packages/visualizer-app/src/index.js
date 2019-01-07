@@ -4,12 +4,12 @@ import visualizer from './visualizer';
 import trackFixed from './T1227R01.mp3';
 
 const getAnalyzer = audioContext => {
-  const bufferLength = 256;
+  const fftSize = 256;
   const analyser = audioContext.createAnalyser();
-  analyser.fftSize = bufferLength;
+  analyser.fftSize = fftSize;
   analyser.smoothingTimeConstant = 0.95;
-  const freqDataArray = new Float32Array(bufferLength);
-  const timeDataArray = new Float32Array(bufferLength);
+  const freqDataArray = new Float32Array(analyser.frequencyBinCount);
+  const timeDataArray = new Float32Array(analyser.frequencyBinCount);
 
   analyser.getAudioFeatures = () => {
     analyser.getFloatFrequencyData(freqDataArray);
