@@ -1,8 +1,17 @@
 import {getAudioContext, getRandomTrack, getAudioBuffer} from 'web-audio-utils';
-import Meyda from 'meyda';
 import visualizer from './visualizer';
 import trackFixed from './T1227R01.mp3';
 
+const getRms = timeDataArray => {
+  let rms = 0;
+  for (let i = 0; i < timeDataArray.length; i++) {
+    rms += Math.pow(timeDataArray[i], 2);
+  }
+  rms = rms / timeDataArray.length;
+  rms = Math.sqrt(rms);
+
+  return rms;
+};
 const getAnalyzer = audioContext => {
   const fftSize = 256;
   const analyser = audioContext.createAnalyser();
@@ -14,17 +23,8 @@ const getAnalyzer = audioContext => {
   analyser.getAudioFeatures = () => {
     analyser.getFloatFrequencyData(freqDataArray);
     analyser.getFloatTimeDomainData(timeDataArray);
-    const features = Meyda.extract([
-      'rms',
-      // 'spectralCentroid',
-      // 'spectralSkewness',
-      // 'loudness',
-      // 'perceptualSpread',
-      // 'perceptualSharpness'
-    ],
-      timeDataArray
-    );
-    return {frequencyData: freqDataArray, timeDomainData: timeDataArray, ...features};
+    const rms = getRms(timeDataArray);
+    return {frequencyData: freqDataArray, timeDomainData: timeDataArray, rms};
   };
   return analyser;
 };
@@ -40,7 +40,6 @@ const visualize = (getAudioFeatures, draw) => {
 const audioContext = getAudioContext();
 //const track = getRandomTrack();
 getAudioBuffer(audioContext, trackFixed).then(audioBuffer => {
-  // console.log('numbers in range [-1.0; 1.0]', audioBuffer);
   const audioBufferSourceNode = new AudioBufferSourceNode(audioContext, {buffer: audioBuffer, loop: true});
   audioBufferSourceNode.start();
   audioBufferSourceNode.connect(audioContext.destination);
