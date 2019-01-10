@@ -1,24 +1,14 @@
-const mapRange = (fromRange, toRange, number) =>
-  (number - fromRange[0]) * (toRange[1] - toRange[0]) / (fromRange[1] - fromRange[0]) + toRange[0];
-const sum = arr => arr.reduce((sum, curr) => sum + curr, 0);
-const avg = arr => sum(arr) / arr.length;
-let logged = 0;
-const logTimes = (msg, times) => {
-  if (logged < times) {
-    console.log(msg);
-    logged = logged + 1;
-  }
-};
+import {mapParamRange, avg} from './utils';
+
 const featureRanges = {
   rms: [0, 1]
 };
-const shapeRanges = {
+const visualRanges = {
   scalingCoef: [1.5, 2.5],
   R: [70, 120],
   zigZagCoef: [0, 100],
   gradRad1: [0, 500]
 };
-const mapParamRange = (feature, shape, v) => mapRange(featureRanges[feature], shapeRanges[shape], v);
 
 const previousFeatures = {};
 const storeFeature = (featureName, featureValue) => {
@@ -33,19 +23,19 @@ const storeFeature = (featureName, featureValue) => {
 };
 const getFeature = name => avg(previousFeatures[name]);
 
-const draw = canvasContext => {
+export const draw = canvasContext => {
   const w = window.innerWidth;
   const h = window.innerHeight;
   canvasContext.canvas.width = w;
   canvasContext.canvas.height = h;
   canvasContext.lineWidth = 0.7;
   canvasContext.strokeStyle = `rgba(255,255,255, 0.7)`;
+  const mapParam = mapParamRange(featureRanges, visualRanges);
 
   return features => {
     if (features === null) {
       return;
     }
-    logTimes(features, 10);
     const {frequencyData, rms} = features;
 
     storeFeature('rms', rms);
@@ -54,11 +44,11 @@ const draw = canvasContext => {
     const numFrequencyBins = frequencyData.length;
     const numLines = numFrequencyBins * 2;
     const angleStep = 2 * Math.PI / (numLines);
-    const scalingCoef = mapParamRange('rms', 'scalingCoef', rmsAvg);
-    const zigZagCoef = mapParamRange('rms', 'zigZagCoef', rmsAvg);
-    const gradRad1 = mapParamRange('rms', 'gradRad1', rmsAvg ** 0.5);
+    const scalingCoef = mapParam('rms', 'scalingCoef', rmsAvg);
+    const zigZagCoef = mapParam('rms', 'zigZagCoef', rmsAvg);
+    const gradRad1 = mapParam('rms', 'gradRad1', rmsAvg ** 0.5);
     const gradRad2 = 500;
-    const R = mapParamRange('rms', 'R', rmsAvg);
+    const R = mapParam('rms', 'R', rmsAvg);
     const numLineParts = 10;
     const circleCenter = {
       x: w / 2,
@@ -78,24 +68,24 @@ const draw = canvasContext => {
     canvasContext.fillRect(0, 0, w, h);
     canvasContext.beginPath();
 
-    for (let i = 0; i < numLines; i++) {
+    for (let lineIndex = 0; lineIndex < numLines; lineIndex++) {
       //reflect in the middle
-      const frequencyBinIndex = i < numFrequencyBins ? i : numFrequencyBins - i % numFrequencyBins;
+      const frequencyBinIndex = lineIndex < numFrequencyBins ? lineIndex : numFrequencyBins - lineIndex % numFrequencyBins;
       const v = Math.abs(frequencyData[frequencyBinIndex]) * scalingCoef;
       const coords = [];
-      let direction = i % 2 === 0 ? 1 : -1;
+      let direction = lineIndex % 2 === 0 ? 1 : -1;
       const startCoord = [
-        circleCenter.x + Math.sin(angleStep * i) * R,
-        circleCenter.y + Math.cos(angleStep * i) * R
+        circleCenter.x + Math.sin(angleStep * lineIndex) * R,
+        circleCenter.y + Math.cos(angleStep * lineIndex) * R
       ];
-      for (let lineIndex = 0; lineIndex < numLineParts; lineIndex++) {
-        const start = lineIndex === 0
+      for (let linePartIndex = 0; linePartIndex < numLineParts; linePartIndex++) {
+        const start = linePartIndex === 0
           ? startCoord
-          : coords[lineIndex - 1];
+          : coords[linePartIndex - 1];
         direction *= -1;
         coords.push([
-          start[0] + Math.sin(angleStep * (i + direction * zigZagCoef)) * v / numLineParts,
-          start[1] + Math.cos(angleStep * (i + direction * zigZagCoef)) * v / numLineParts
+          start[0] + Math.sin(angleStep * (lineIndex + direction * zigZagCoef)) * v / numLineParts,
+          start[1] + Math.cos(angleStep * (lineIndex + direction * zigZagCoef)) * v / numLineParts
         ]);
       }
       canvasContext.moveTo(...startCoord);
@@ -108,4 +98,3 @@ const draw = canvasContext => {
   };
 };
 
-module.exports = {draw};

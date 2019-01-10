@@ -18,12 +18,8 @@ const getLiveAudio = (audioCtx) => navigator.mediaDevices.getUserMedia({audio: {
 .then(stream => audioCtx.createMediaStreamSource(stream));
 
 const getAudioContext = () => {
-  //eslint-disable-next-line
-  if (typeof window !== `undefined`){
-    const Ctx = window.AudioContext || window.webkitAudioContext;
-    return Ctx ? new Ctx() : null;
-  }
-  return null;
+  const Ctx = window.AudioContext || window.webkitAudioContext;
+  return Ctx ? new Ctx() : null;
 };
 
 module.exports = {
