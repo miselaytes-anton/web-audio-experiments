@@ -4,7 +4,7 @@ const featureRanges = {
   rms: [0, 1]
 };
 const visualRanges = {
-  scalingCoef: [1.5, 2.5],
+  scalingCoef: [1, 2],
   R: [70, 120],
   zigZagCoef: [0, 100],
   gradRad1: [0, 500]
@@ -31,6 +31,7 @@ export const draw = canvasContext => {
   canvasContext.lineWidth = 0.7;
   canvasContext.strokeStyle = `rgba(255,255,255, 0.7)`;
   const mapParam = mapParamRange(featureRanges, visualRanges);
+  const numFrequencyBins = 128;
 
   return features => {
     if (features === null) {
@@ -41,7 +42,6 @@ export const draw = canvasContext => {
     storeFeature('rms', rms);
     const rmsAvg = getFeature('rms');
 
-    const numFrequencyBins = frequencyData.length;
     const numLines = numFrequencyBins * 2;
     const angleStep = 2 * Math.PI / (numLines);
     const scalingCoef = mapParam('rms', 'scalingCoef', rmsAvg);
