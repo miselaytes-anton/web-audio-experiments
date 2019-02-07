@@ -1,25 +1,23 @@
 import {mapParamRange, getFeatureStore} from './utils';
 import {rLinearGradient, hex2rgb, rgb2hex} from 'kandinsky-js';
 
-const loudnessThreshold = 15;
 const featureRanges = {
-  spectralCentroid: [20, 80],
+  spectralCentroid: [240, 260],
   mfcc: [-30, 80],
   loudness: [0, 24]
 };
 const visualRanges = {
   R: [30, 100],
-  r: [0, 200],
-  colorIndex: [0, 60]
+  r: [0, 250],
+  colorIndex: [0, 19]
 };
 const colors = rLinearGradient(
-  60,
+  featureRanges.spectralCentroid[1] - featureRanges.spectralCentroid[0],
   hex2rgb('#f92104'),
   hex2rgb('#f9f904'),
 ).map(rgb2hex);
-const notSpeakingColor = '#ccc';
 const {storeFeature, getFeature} = getFeatureStore(25);
-const {storeFeature: storeFeatureSlow, getFeature: getFeatureSlow} = getFeatureStore(25);
+const {storeFeature: storeFeatureSlow, getFeature: getFeatureSlow} = getFeatureStore(40);
 
 const getCoord = (circleCenter, angleStep, R, values, i, frameNum) =>
    ([
@@ -27,7 +25,6 @@ const getCoord = (circleCenter, angleStep, R, values, i, frameNum) =>
     circleCenter.y + Math.cos(angleStep * (i + frameNum / 60)) * (R + values[i])
   ]);
 const numCoefs = 13;
-let frameNum = 0;
 const weights = [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2];
 
 export const draw = canvasContext => {
@@ -42,12 +39,10 @@ export const draw = canvasContext => {
   };
   const angleStep = 2 * Math.PI / (numCoefs);
 
-  return features => {
-    frameNum++;
+  return (features, frameNum) => {
     const {mfcc, spectralCentroid, loudness} = features;
     canvasContext.clearRect(0, 0, w, h);
     canvasContext.beginPath();
-
     storeFeatureSlow('loudness', loudness);
     storeFeatureSlow('spectralCentroid', spectralCentroid);
     mfcc.forEach((v, i) => storeFeature(`mfcc${i}`, v));
@@ -65,10 +60,8 @@ export const draw = canvasContext => {
       }
     }
     canvasContext.lineTo(...getCoord(circleCenter, angleStep, R, mappedMFCC, 0, frameNum));
-    const colorIndex = mapParam('spectralCentroid', 'colorIndex', Math.floor(getFeatureSlow('spectralCentroid')));
-    canvasContext.fillStyle = loudnessAvg < loudnessThreshold
-      ? notSpeakingColor
-      : colors[colorIndex];
+    const colorIndex = Math.floor(mapParam('spectralCentroid', 'colorIndex', getFeatureSlow('spectralCentroid')));
+    canvasContext.fillStyle = colors[colorIndex];
     canvasContext.fill();
   };
 };

@@ -1,4 +1,4 @@
-import {getAudioContext, getLiveAudio, getAudioBuffer} from 'web-audio-utils';
+import {getAudioContext, getAudioBuffer, getRandomTrack, getLiveAudio} from 'web-audio-utils';
 import {draw as draw1} from './visualizer1';
 import {draw as draw2} from './visualizer2';
 import Meyda from 'meyda';
@@ -22,9 +22,9 @@ const getAnalyzer = (audioContext, {fftSize = 512, smoothingTimeConstant = 0.95}
   analyser.getAudioFeatures = () => {
     analyser.getByteFrequencyData(freqDataArray);
     analyser.getFloatTimeDomainData(timeDataFloatArray);
-
     const frequencyData = Array.from(freqDataArray);
     Meyda.fftSize = fftSize;
+    Meyda.bufferSize = fftSize;
     const {mfcc, spectralCentroid, rms, loudness} = Meyda.extract([
         'mfcc',
         'spectralCentroid',
@@ -38,10 +38,12 @@ const getAnalyzer = (audioContext, {fftSize = 512, smoothingTimeConstant = 0.95}
   return analyser;
 };
 
+let frameNum = 0;
 const visualize = (getAudioFeatures, draw) => {
   requestAnimationFrame(() => {
+    frameNum++;
     const features = getAudioFeatures();
-    draw(features);
+    draw(features, frameNum);
     visualize(getAudioFeatures, draw);
   });
 };
@@ -54,14 +56,19 @@ const getDrawFunction = visualizerType => {
       return draw1;
   }
 };
-
+const getTrack = input => input === 'lomax' ? getRandomTrack() : (tracks[input] || tracks.female);
 const getSourceNode = ({audioContext, input}) =>
   input === 'mic'
-    ? getLiveAudio(audioContext)
-    : getAudioBuffer(audioContext, tracks[input] || female)
+    ? getLiveAudio(audioContext, {
+      autoGainControl: true,
+      echoCancellation: true,
+      noiseSuppression: true,
+    })
+    : getAudioBuffer(audioContext, getTrack(input))
       .then(audioBuffer => {
       const audioBufferSourceNode = new AudioBufferSourceNode(audioContext, {buffer: audioBuffer, loop: true});
       audioBufferSourceNode.start();
+      audioBufferSourceNode.connect(audioContext.destination);
       return audioBufferSourceNode;
     });
 
@@ -72,7 +79,7 @@ const audioContext = getAudioContext();
 
 getSourceNode({audioContext, input})
   .then(sourceNode => {
-    const analyser = getAnalyzer(audioContext, {fftSize: 2048});
+    const analyser = getAnalyzer(audioContext, {fftSize: 1024});
     sourceNode.connect(analyser);
     const canvas = document.getElementById('the-canvas');
     const canvasContext = canvas.getContext('2d');

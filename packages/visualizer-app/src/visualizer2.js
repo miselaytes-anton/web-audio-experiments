@@ -1,4 +1,4 @@
-import {mapParamRange, avg} from './utils';
+import {mapParamRange, getFeatureStore} from './utils';
 
 const featureRanges = {
   rms: [0, 1]
@@ -10,18 +10,7 @@ const visualRanges = {
   gradRad1: [0, 500]
 };
 
-const previousFeatures = {};
-const storeFeature = (featureName, featureValue) => {
-  const numStoredFeatures = 20;
-  if (!previousFeatures[featureName]) {
-    previousFeatures[featureName] = [];
-  }
-  previousFeatures[featureName].push(featureValue);
-  if (previousFeatures[featureName].length > numStoredFeatures) {
-    previousFeatures[featureName].shift();
-  }
-};
-const getFeature = name => avg(previousFeatures[name]);
+const {storeFeature, getFeature} = getFeatureStore(20);
 
 export const draw = canvasContext => {
   const w = window.innerWidth;
@@ -41,7 +30,6 @@ export const draw = canvasContext => {
 
     storeFeature('rms', rms);
     const rmsAvg = getFeature('rms');
-
     const numLines = numFrequencyBins * 2;
     const angleStep = 2 * Math.PI / (numLines);
     const scalingCoef = mapParam('rms', 'scalingCoef', rmsAvg);
@@ -97,4 +85,3 @@ export const draw = canvasContext => {
     canvasContext.stroke();
   };
 };
-
