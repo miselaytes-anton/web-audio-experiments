@@ -72,18 +72,22 @@ const getSourceNode = ({audioContext, input}) =>
       return audioBufferSourceNode;
     });
 
-const urlParams = new URLSearchParams(window.location.search);
-const visualizerType = urlParams.get('type');
-const input = urlParams.get('input');
-const audioContext = getAudioContext();
+const start = document.getElementById('start');
+start.addEventListener('click', () => {
+  start.outerHTML = '';
+  const urlParams = new URLSearchParams(window.location.search);
+  const visualizerType = urlParams.get('type');
+  const input = urlParams.get('input');
+  const audioContext = getAudioContext();
 
-getSourceNode({audioContext, input})
-  .then(sourceNode => {
-    const analyser = getAnalyzer(audioContext, {fftSize: 1024});
-    sourceNode.connect(analyser);
-    const canvas = document.getElementById('the-canvas');
-    const canvasContext = canvas.getContext('2d');
-    const draw = getDrawFunction(visualizerType);
-    visualize(analyser.getAudioFeatures, draw(canvasContext));
-  })
-  .catch(console.error);
+  getSourceNode({audioContext, input})
+    .then(sourceNode => {
+      const analyser = getAnalyzer(audioContext, {fftSize: 1024});
+      sourceNode.connect(analyser);
+      const canvas = document.getElementById('the-canvas');
+      const canvasContext = canvas.getContext('2d');
+      const draw = getDrawFunction(visualizerType);
+      visualize(analyser.getAudioFeatures, draw(canvasContext));
+    })
+    .catch(console.error);
+});

@@ -3,8 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title><%= htmlWebpackPlugin.options.title %></title>
+    <style>
+        #start{
+            font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+            font-weight: 300;
+            font-size: 40px;
+            min-width: 110px;
+            padding: 1rem;
+            background: tomato;
+            color: white;
+            cursor: pointer;
+            border: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -moz-transform: translateX(-50%) translateY(-50%);
+            -webkit-transform: translateX(-50%) translateY(-50%);
+            transform: translateX(-50%) translateY(-50%);
+        }
+        #start:hover {
+            background: darkgray;
+        }
+
+    </style>
 </head>
 <body>
+<button id="start">START</button>
 <canvas id="the-canvas" width="0" height="0" ></canvas>
 </body>
 </html>

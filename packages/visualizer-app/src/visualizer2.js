@@ -4,7 +4,7 @@ const featureRanges = {
   rms: [0, 1]
 };
 const visualRanges = {
-  scalingCoef: [1, 2],
+  scalingCoef: [1, 3],
   R: [70, 120],
   zigZagCoef: [0, 100],
   gradRad1: [0, 500]
@@ -40,7 +40,7 @@ export const draw = canvasContext => {
     const numLineParts = 10;
     const circleCenter = {
       x: w / 2,
-      y: h / 2 + 50
+      y: h / 2 - 20
     };
     const gradient = canvasContext.createRadialGradient(
       circleCenter.x,

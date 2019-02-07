@@ -8,7 +8,7 @@ const featureRanges = {
 };
 const visualRanges = {
   R: [30, 100],
-  r: [0, 250],
+  r: [0, 200],
   colorIndex: [0, 19]
 };
 const colors = rLinearGradient(
