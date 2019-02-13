@@ -58,14 +58,14 @@ const getDrawFunction = visualizerType => {
   }
 };
 const getTrack = input => input === 'lomax' ? getRandomTrack() : (tracks[input] || tracks.female);
-const getSourceNode = ({audioContext, input}) =>
-  input === 'mic'
+const getSourceNode = ({audioContext, inputType}) =>
+  inputType === 'mic'
     ? getLiveAudio(audioContext, {
       autoGainControl: true,
       echoCancellation: true,
       noiseSuppression: true,
     })
-    : getAudioBuffer(audioContext, getTrack(input))
+    : getAudioBuffer(audioContext, getTrack(inputType))
       .then(audioBuffer => {
       const audioBufferSourceNode = new AudioBufferSourceNode(audioContext, {buffer: audioBuffer, loop: true});
       audioBufferSourceNode.start();
