@@ -1,0 +1,41 @@
+{
+  "name": "voice-shape-app",
+  "version": "0.0.1",
+  "scripts": {
+    "test": "jest src/**.test.js",
+    "build": "NODE_ENV=production webpack",
+    "watch": "webpack --watch",
+    "start": "webpack-dev-server --open --https"
+  },
+  "dependencies": {
+    "lodash": "^4.17.11",
+    "meyda": "^4.2.0",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "react-redux": "^5.1.0",
+    "redux": "^4.0.0",
+    "styled-components": "^4.1.1",
+    "web-audio-utils": "^0.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-eslint": "^8.2.6",
+    "babel-jest": "^23.6.0",
+    "babel-loader": "^8.0.4",
+    "clean-webpack-plugin": "^0.1.19",
+    "css-loader": "^1.0.0",
+    "file-loader": "^2.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "jest": "^23.6.0",
+    "node-sass": "^4.9.3",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.9"
+  }
+}
