@@ -51,7 +51,7 @@ const visualize = (getAudioFeatures, draw) => {
 
 const getDrawFunction = visualizerType => {
   switch (visualizerType) {
-    case 'music':
+    case 'angry-rays':
       return draw2;
     default:
       return draw1;

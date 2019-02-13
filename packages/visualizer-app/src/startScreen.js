@@ -4,7 +4,7 @@ export const init = ({onStartClick}) => {
   const visTypeElem = document.getElementById('visType');
   const inputTypeElem = document.getElementById('inputType');
 
-  visTypeElem.value = localStorage.getItem('visType') || 'music';
+  visTypeElem.value = localStorage.getItem('visType') || 'angry-rays';
   inputTypeElem.value = localStorage.getItem('inputType') || 'mic';
 
   startElem.addEventListener('click', () => {
