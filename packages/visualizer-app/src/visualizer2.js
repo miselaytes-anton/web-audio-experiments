@@ -1,13 +1,7 @@
-import {mapParamRange, getFeatureStore} from './utils';
+import {mapParamRange, getFeatureStore, scale} from './utils';
 
 const featureRanges = {
   rms: [0, 1]
-};
-const visualRanges = {
-  scalingCoef: [1, 3],
-  R: [70, 120],
-  zigZagCoef: [0, 100],
-  gradRad1: [0, 500]
 };
 
 const {storeFeature, getFeature} = getFeatureStore(20);
@@ -15,10 +9,18 @@ const {storeFeature, getFeature} = getFeatureStore(20);
 export const draw = canvasContext => {
   const w = window.innerWidth;
   const h = window.innerHeight;
+  const scaleForHeight = scale(h);
   canvasContext.canvas.width = w;
   canvasContext.canvas.height = h;
-  canvasContext.lineWidth = 0.7;
+  canvasContext.lineWidth = scaleForHeight(0.25);
   canvasContext.strokeStyle = `rgba(255,255,255, 0.7)`;
+  const visualRanges = {
+    lineLengthCoef: [0.5, 1.5].map(scaleForHeight),
+    R: [20, 60].map(scaleForHeight),
+    zigZagCoef: [0, 50].map(scaleForHeight),
+    gradRad1: [0, 500]
+  };
+
   const mapParam = mapParamRange(featureRanges, visualRanges);
   const numFrequencyBins = 128;
 
@@ -32,7 +34,7 @@ export const draw = canvasContext => {
     const rmsAvg = getFeature('rms');
     const numLines = numFrequencyBins * 2;
     const angleStep = 2 * Math.PI / (numLines);
-    const scalingCoef = mapParam('rms', 'scalingCoef', rmsAvg);
+    const lineLengthCoef = mapParam('rms', 'lineLengthCoef', rmsAvg);
     const zigZagCoef = mapParam('rms', 'zigZagCoef', rmsAvg);
     const gradRad1 = mapParam('rms', 'gradRad1', rmsAvg ** 0.5);
     const gradRad2 = 500;
@@ -59,7 +61,7 @@ export const draw = canvasContext => {
     for (let lineIndex = 0; lineIndex < numLines; lineIndex++) {
       //reflect in the middle
       const frequencyBinIndex = lineIndex < numFrequencyBins ? lineIndex : numFrequencyBins - lineIndex % numFrequencyBins;
-      const v = Math.abs(frequencyData[frequencyBinIndex]) * scalingCoef;
+      const v = Math.abs(frequencyData[frequencyBinIndex]) * lineLengthCoef;
       const coords = [];
       let direction = lineIndex % 2 === 0 ? 1 : -1;
       const startCoord = [

@@ -1,3 +1,5 @@
+import {curry} from 'ramda';
+
 export const clamp = (range, v) => {
   if (v < range[0]) {
     return range[0];
@@ -40,3 +42,6 @@ export const getFeatureStore = (numStoredFeatures = 5) => {
   const getFeature = name => avg(previousFeatures[name]);
   return {storeFeature, getFeature};
 };
+
+export const getScaleCoef = h => Math.floor(h / 150);
+export const scale = curry((h, v) => v * getScaleCoef(h));
