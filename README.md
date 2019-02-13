@@ -13,6 +13,14 @@ cd packages/[project-name]-app
 npm start
 ```
 
+## Visualizer app
+
+https://amiselaytes.com/visual
+
+![visualizer app screenshot 1](./packages/visualizer-app/angry-rays.png)
+![visualizer app screenshot 2](./packages/visualizer-app/voice-shape.png)
+
+
 ## Tape app
 
 https://amiselaytes.com/tape
