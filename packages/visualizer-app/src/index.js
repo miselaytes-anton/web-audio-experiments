@@ -1,6 +1,7 @@
 import {getAudioContext, getAudioBuffer, getRandomTrack, getLiveAudio} from 'web-audio-utils';
 import {draw as draw1} from './visualizer1';
 import {draw as draw2} from './visualizer2';
+import {init} from './startScreen';
 import Meyda from 'meyda';
 
 import male from '../audio/male.mp3';
@@ -9,7 +10,7 @@ import music from '../audio/music.mp3';
 
 const tracks = {male, female, music};
 
-const getAnalyzer = (audioContext, {fftSize = 512, smoothingTimeConstant = 0.95}) => {
+const getAnalyzerNode = (audioContext, {fftSize = 512, smoothingTimeConstant = 0.95}) => {
   const analyser = audioContext.createAnalyser();
   analyser.fftSize = fftSize;
   analyser.smoothingTimeConstant = smoothingTimeConstant;
@@ -50,7 +51,7 @@ const visualize = (getAudioFeatures, draw) => {
 
 const getDrawFunction = visualizerType => {
   switch (visualizerType) {
-    case '2':
+    case 'music':
       return draw2;
     default:
       return draw1;
@@ -72,22 +73,19 @@ const getSourceNode = ({audioContext, input}) =>
       return audioBufferSourceNode;
     });
 
-const start = document.getElementById('start');
-start.addEventListener('click', () => {
-  start.outerHTML = '';
-  const urlParams = new URLSearchParams(window.location.search);
-  const visualizerType = urlParams.get('type');
-  const input = urlParams.get('input');
+const startVisualizer = ({visType, inputType}) => {
   const audioContext = getAudioContext();
+  const canvas = document.getElementById('the-canvas');
+  const canvasContext = canvas.getContext('2d');
+  const draw = getDrawFunction(visType);
 
-  getSourceNode({audioContext, input})
+  getSourceNode({audioContext, inputType})
     .then(sourceNode => {
-      const analyser = getAnalyzer(audioContext, {fftSize: 1024});
+      const analyser = getAnalyzerNode(audioContext, {fftSize: 1024});
       sourceNode.connect(analyser);
-      const canvas = document.getElementById('the-canvas');
-      const canvasContext = canvas.getContext('2d');
-      const draw = getDrawFunction(visualizerType);
       visualize(analyser.getAudioFeatures, draw(canvasContext));
     })
     .catch(console.error);
-});
+};
+
+init({onStartClick: startVisualizer});

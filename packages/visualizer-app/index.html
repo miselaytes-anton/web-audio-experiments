@@ -4,31 +4,90 @@
     <meta charset="UTF-8">
     <title><%= htmlWebpackPlugin.options.title %></title>
     <style>
-        #start{
+        html, body {
+            height: 100%;
             font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
             font-weight: 300;
-            font-size: 40px;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        .flex-container{
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            display: -webkit-box;
+            display: -moz-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .flex-item {
+            margin: 20px 10px;
+            text-align: center;
+        }
+
+        #start{
+            font-size: 25px;
             min-width: 10%;
             padding: 1rem;
             background: tomato;
             color: white;
             cursor: pointer;
             border: none;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            -moz-transform: translateX(-50%) translateY(-50%);
-            -webkit-transform: translateX(-50%) translateY(-50%);
-            transform: translateX(-50%) translateY(-50%);
+            text-transform: uppercase;
+
         }
         #start:hover {
             background: darkgray;
+        }
+        select {
+            height: 34px;
+            width: 240px;
+            border: 1px solid #ccc;
+            border-radius: 0;
+            -webkit-appearance: button;
+            text-align: center;
+            text-align-last:center;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        input:focus{
+            outline: none;
         }
 
     </style>
 </head>
 <body>
-<button id="start">START</button>
-<canvas id="the-canvas" width="0" height="0" ></canvas>
+<div id="startScreen" class="flex-container">
+    <div class="row">
+        <div class="flex-item">
+            <label for="visType">Visualization type</label>
+            <select name="visType" id="visType" >
+                <option value="voice">Voice</option>
+                <option value="music" >Music</option>
+            </select>
+        </div>
+        <div class="flex-item">
+            <label for="visType">Sound source</label>
+            <select name="inputType" id="inputType" >
+                <option value="music" >Music</option>
+                <option value="mic">Microphone</option>
+                <option value="female" >Female</option>
+                <option value="male" >Male</option>
+                <option value="lomax" >Lomax archive</option>
+            </select>
+        </div>
+        <div class="flex-item">
+            <button id="start" class="flex-item">start</button>
+        </div>
+    </div>
+</div>
+<canvas id="the-canvas" width="0" height="0" />
 </body>
 </html>
