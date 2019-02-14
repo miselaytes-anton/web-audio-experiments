@@ -1,4 +1,4 @@
 export default {
   audioBuffer: null,
-  shape: new Array(13).fill(0)
+  features: {mfcc: new Array(13).fill(0), spectralCentroid: null},
 };

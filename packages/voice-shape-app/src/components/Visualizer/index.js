@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
+import {rLinearGradient, hex2rgb, rgb2hex} from 'kandinsky-js';
 
 const W = window.innerWidth;
 const H = window.innerHeight * 0.7;
@@ -21,10 +22,23 @@ const getCoord = (circleCenter, angleStep, R, values, i) =>
     circleCenter.x + Math.sin(angleStep * i) * (R + values[i]),
     circleCenter.y + Math.cos(angleStep * i) * (R + values[i])
   ]);
+const featureRanges = {
+  spectralCentroid: [130, 250],
+  mfcc: [-30, 80],
+};
+const shapeRanges = {
+  line: [0, 150],
+  colorIndex: [0, 19]
+};
+const colors = rLinearGradient(
+  shapeRanges.colorIndex[1] - shapeRanges.colorIndex[0],
+  hex2rgb('#f92104'),
+  hex2rgb('#f9f904'),
+).map(rgb2hex);
 
 class Visualizer extends Component {
   static propTypes = {
-    shape: PropTypes.array,
+    features: PropTypes.object.isRequired,
   };
 
   constructor(props) {
@@ -46,12 +60,12 @@ class Visualizer extends Component {
     const numCoefs = 13;
     const R = 100;
     const drawCycle = () => {
+      const {mfcc, spectralCentroid} = this.props.features;
       const angleStep = 2 * Math.PI / numCoefs;
       canvasContext.clearRect(0, 0, W, H);
       canvasContext.beginPath();
 
-      const shape = this.props.shape.map((v) => mapRange([-30, 80], [0, 150], v));
-      console.log('shape', shape);
+      const shape = mfcc.map((v) => mapRange(featureRanges.mfcc, shapeRanges.line, v));
 
       for (let i = 0; i < numCoefs; i++) {
         const coords = getCoord(c, angleStep, R, shape, i);
@@ -62,8 +76,8 @@ class Visualizer extends Component {
         }
       }
       canvasContext.lineTo(...getCoord(c, angleStep, R, shape, 0));
-      // const colorIndex = Math.floor(mapParam('spectralCentroid', 'colorIndex', getFeature('spectralCentroid')));
-      canvasContext.fillStyle = 'black';
+      const colorIndex = Math.floor(mapRange(featureRanges.spectralCentroid, shapeRanges.colorIndex, spectralCentroid));
+      canvasContext.fillStyle = spectralCentroid ? colors[colorIndex] : 'black';
       canvasContext.fill();
       requestAnimationFrame(drawCycle);
     };
@@ -79,8 +93,4 @@ class Visualizer extends Component {
 
 export default connect(
   state => state,
-  // dispatch => ({
-  //   publishRecord: (audioBuffer) => dispatch(recordFinished(audioBuffer))
-  // })
 )(Visualizer);
-

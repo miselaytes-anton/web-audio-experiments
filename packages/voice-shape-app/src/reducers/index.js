@@ -1,4 +1,4 @@
-import {generate} from '../shape';
+import {extract} from '../features';
 
 const voiceApp = (state, action) => {
   switch (action.type) {
@@ -6,7 +6,7 @@ const voiceApp = (state, action) => {
       return {
         ...state,
         audioBuffer: action.audioBuffer,
-        shape: generate(action.audioBuffer.getChannelData(0))
+        features: extract(action.audioBuffer.getChannelData(0))
       };
     default:
       return state;
