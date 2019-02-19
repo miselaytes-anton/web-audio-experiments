@@ -1,8 +1,6 @@
-'use strict';
+const CompositeAudioNode = require('./composite-audio-node');
 
-const {CompositeAudioNode} = require('web-audio-utils');
-
-module.exports = class LowpassCombFilter extends CompositeAudioNode {
+module.exports = class LowPassCombFilter extends CompositeAudioNode {
 
   get resonance () {
     return this._gain.gain;

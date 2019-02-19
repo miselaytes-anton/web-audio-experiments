@@ -1,4 +1,3 @@
-'use strict';
 
 /**
  * Allows to set a parameter value for multiple nodes (of same kind)
@@ -38,4 +37,4 @@ module.exports = function (params) {
   });
 
   return parameter;
-};
+}

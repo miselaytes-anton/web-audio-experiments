@@ -1,8 +1,15 @@
 const Freeverb = require('freeverb');
-const {getLiveAudio} = require('web-audio-utils');
 const initUi = require('./ui').init;
 const defaults = {dampening: 3000, roomSize: 0.7, dryGain: 0.2, wetGain: 0.8};
 const audioCtx = new AudioContext();
+
+const getLiveAudio = (audioCtx, opts = {}) => navigator.mediaDevices.getUserMedia({audio: {
+  autoGainControl: false,
+  echoCancellation: false,
+  noiseSuppression: false,
+  ...opts
+}})
+.then(stream => audioCtx.createMediaStreamSource(stream));
 
 const getMasterGain = (audioCtx) => {
   const masterGain = audioCtx.createGain();

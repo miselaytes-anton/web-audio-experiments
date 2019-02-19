@@ -1,5 +1,6 @@
-const {CompositeAudioNode, mergeParams} = require('web-audio-utils');
-const LowpassCombFilter = require('low-pass-comb-filter');
+const CompositeAudioNode = require('./composite-audio-node');
+const mergeParams = require('./merge-params');
+const LowpassCombFilter = require('./low-pass-comb-filter');
 
 // Freeverb params defined by Mr. Shroeder
 const SAMPLE_RATE = 44100;
