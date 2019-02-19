@@ -5,35 +5,44 @@ import {connect} from 'react-redux';
 import {recordFinished} from '../../actions';
 import {Button} from '../Styled';
 
-const audioContext = new AudioContext();
-
-//audioContext.resume().then(
 class Recorder extends Component {
   static propTypes = {
     publishRecord: PropTypes.func.isRequired,
+    audioContext: PropTypes.object.isRequired,
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      isRecording: false
+      isRecording: false,
+      audioIsResumed: false
     };
+  }
+  componentDidMount() {
     navigator.mediaDevices.getUserMedia({audio: true})
       .then(sourceStream => {
-        this.recorder = new Rec(audioContext, sourceStream);
+        this.recorder = new Rec(this.props.audioContext, sourceStream);
       });
   }
 
   onButtonClick = () => {
-    if (!this.state.isRecording) {
-      this.recorder.start();
-      this.setState({isRecording: true});
-    } else {
-      this.recorder.stop().then(audioBuffer => {
-        this.setState({isRecording: false, audioBuffer});
-        this.props.publishRecord(audioBuffer);
-      });
-    }
+    const P = this.state.audioIsResumed
+      ? Promise.resolve()
+      : this.props.audioContext.resume()
+        .then(() => {
+          this.setState({audioIsResumed: true});
+        });
+    P.then(() => {
+      if (!this.state.isRecording) {
+        this.recorder.start();
+        this.setState({isRecording: true});
+      } else {
+        this.recorder.stop().then(audioBuffer => {
+          this.setState({isRecording: false, audioBuffer});
+          this.props.publishRecord(audioBuffer);
+        });
+      }
+    });
   };
 
   render() {
@@ -44,7 +53,7 @@ class Recorder extends Component {
 }
 
 export default connect(
-  state => state,
+  state => ({audioContext: state.audioContext}),
   dispatch => ({
     publishRecord: (audioBuffer) => dispatch(recordFinished(audioBuffer))
   })

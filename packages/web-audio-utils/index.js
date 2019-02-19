@@ -22,7 +22,7 @@ export const getAudioContext = () => {
   return Ctx ? new Ctx() : null;
 };
 
-const closestPowerOf2 = number => 2 ** Math.floor(Math.log2(number));
+export const closestPowerOf2 = number => 2 ** Math.floor(Math.log2(number));
 
 const msToNumSamples = (ms, sampleRate) => sampleRate * ms / 1000;
 
@@ -41,7 +41,7 @@ const avg = arr => sum(arr) / arr.length;
 const getRms = signal => avg(signal.map(v => v ** 2)) ** 1 / 2;
 const toDb = v => 20 * Math.log10(v);
 export const removeSilence = (signal, sampleRate, opts = {}) => {
-  const {threshold = 0, minSilenceDuration = 500} = opts;
+  const {threshold = -100, minSilenceDuration = 500} = opts;
   // split into 25 ms frames
   const frameLengthMs = 25;
   const frames = signalToFrames(signal, sampleRate, {frameLengthMs, overlapLengthMs: 0});
@@ -66,4 +66,18 @@ export const removeSilence = (signal, sampleRate, opts = {}) => {
     const frameIndex = Math.floor(i / numSamplesInFrame);
     return !longGroups.some(group => group.includes(frameIndex));
   });
+};
+
+export const signalToBuffer = (audioContext, signal) => {
+  const newBuffer = audioContext.createBuffer(1, signal.length, audioContext.sampleRate);
+  const nowBuffering = newBuffer.getChannelData(0);
+  for (let i = 0; i < newBuffer.length; i++) {
+    nowBuffering[i] = signal[i];
+  }
+  return newBuffer;
+};
+
+export const removeSilenceFromBuffer = (audioBuffer, audioContext, opts = {}) => {
+  const signalWithoutSilence = removeSilence(audioBuffer.getChannelData(0), audioBuffer.sampleRate, opts);
+  return signalToBuffer(audioContext, signalWithoutSilence);
 };

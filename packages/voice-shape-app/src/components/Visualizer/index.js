@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 import {rLinearGradient, hex2rgb, rgb2hex} from 'kandinsky-js';
+import {playAudio} from '../../audio';
 
 const W = window.innerWidth;
 const H = window.innerHeight * 0.7;
@@ -39,6 +40,7 @@ const colors = rLinearGradient(
 class Visualizer extends Component {
   static propTypes = {
     features: PropTypes.object.isRequired,
+    onShapeClick: PropTypes.func,
   };
 
   constructor(props) {
@@ -87,10 +89,15 @@ class Visualizer extends Component {
     return <canvas
       ref={this.ref}
       id="main-canvas"
+      style={{cursor: 'pointer'}}
+      onClick={() => {
+        this.props.onShapeClick();
+      }
+      }
     />;
   }
 }
 
 export default connect(
-  state => state,
+  state => ({onShapeClick: () => playAudio(state.audioContext, state.audioBuffer), features: state.features}),
 )(Visualizer);
