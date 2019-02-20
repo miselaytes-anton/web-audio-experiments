@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Rec from './Recorder';
 import {connect} from 'react-redux';
 import {recordFinished} from '../../actions';
-import {Button} from '../Styled';
+import {FaMicrophone} from 'react-icons/fa';
 
 class Recorder extends Component {
   static propTypes = {
@@ -47,8 +47,8 @@ class Recorder extends Component {
 
   render() {
     const {isRecording} = this.state;
-    return <Button onClick={this.onButtonClick} > {isRecording ? 'stop' : 'record'}
-    </Button>;
+    const color = isRecording ? 'red' : 'black';
+    return <FaMicrophone style={{fontSize: '3rem', cursor: 'pointer', color}} onClick={this.onButtonClick} />;
   }
 }
 

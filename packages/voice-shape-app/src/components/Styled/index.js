@@ -3,13 +3,11 @@ import styled from 'styled-components';
 export const Button = styled.button`
   min-width: 110px;
   display: inline-block;
-  border-radius: 3px;
   padding: 0.5rem;
   background: black;
   color: white;
   cursor: pointer;
   border: 2px solid black;
-  border-radius: 3px;
   :hover {
     color: black;
     background: white;
@@ -38,4 +36,10 @@ export const FlexContainer = styled.div`
 export const FlexItem = styled.div`
   margin: 10px;
   text-align: center;
+`;
+
+export const H1 = styled.h1`
+ font-family: 'Ceviche One', cursive;
+ font-size: 5rem;
+ margin: 0;
 `;

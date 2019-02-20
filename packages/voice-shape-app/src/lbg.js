@@ -5,7 +5,7 @@ const vScale = (arr, scaleC) => arr.map(item => item * scaleC);
 const vAdd = vectors => vectors.reduce((vSum, vector) =>
     vector.map((value, i) => value + (vSum[i] || 0)),
   []);
-const vAvg = vectors => vScale(vAdd(vectors), 1 / vectors.length);
+export const vAvg = vectors => vScale(vAdd(vectors), 1 / vectors.length);
 
 /**
  * Split every centroid in two

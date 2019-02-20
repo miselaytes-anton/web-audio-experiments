@@ -1,7 +1,7 @@
 import Meyda from 'meyda';
 
 import {signalToFrames, singalPow2Len} from 'web-audio-utils';
-import {lbg} from './lbg';
+import {lbg, vAvg} from './lbg';
 
 export const extractFeatures = (signal, sampleRate) => {
   const {spectralCentroid} = Meyda.extract(['spectralCentroid'], singalPow2Len(signal));
@@ -9,7 +9,7 @@ export const extractFeatures = (signal, sampleRate) => {
   const features = frames
     .map(frame => Meyda.extract('mfcc', frame));
   const codebook = lbg(features);
-  return {codebook, spectralCentroid};
+  return {mfcc: vAvg(codebook), spectralCentroid};
 };
 
 export const playAudio = (audioContext, audioBuffer) => {

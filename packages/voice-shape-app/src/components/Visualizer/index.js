@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
-import {rLinearGradient, hex2rgb, rgb2css} from 'kandinsky-js';
+import {multiGradient, rgb2hsl, hsl2css} from 'kandinsky-js';
 import {playAudio} from '../../audio';
 
 const W = window.innerWidth;
@@ -32,13 +32,12 @@ const shapeRanges = {
   colorIndex: [0, 19]
 };
 
-const numShapes = 16;
-const alpha = 1 / numShapes;
-const colors = rLinearGradient(
+// const numShapes = 16;
+const alpha = 1;
+const colors = multiGradient(
   shapeRanges.colorIndex[1] - shapeRanges.colorIndex[0],
-  hex2rgb('#f92104'),
-  hex2rgb('#f9f904'),
-).map(rgb => rgb2css(alpha, rgb));
+  [[1, 0, 128], [241, 73, 0], [0, 128, 1], [247, 235, 1], [240, 0, 1]].map(rgb2hsl),
+).map(hsl => hsl2css(alpha, hsl));
 
 class Visualizer extends Component {
   static propTypes = {
@@ -65,26 +64,24 @@ class Visualizer extends Component {
     const numCoefs = 13;
     const R = 100;
     const drawCycle = () => {
-      const {codebook, spectralCentroid} = this.props.features;
+      const {mfcc, spectralCentroid} = this.props.features;
       const angleStep = 2 * Math.PI / numCoefs;
       canvasContext.clearRect(0, 0, W, H);
       const colorIndex = Math.floor(mapRange(featureRanges.spectralCentroid, shapeRanges.colorIndex, spectralCentroid));
       canvasContext.fillStyle = spectralCentroid ? colors[colorIndex] : 'black';
       canvasContext.beginPath();
 
-      for (let mfcc of codebook) {
-        const shape = mfcc.map((v) => mapRange(featureRanges.mfcc, shapeRanges.line, v));
-        for (let i = 0; i < numCoefs; i++) {
-          const coords = getCoord(c, angleStep, R, shape, i);
-          if (i === 0) {
-            canvasContext.moveTo(...coords);
-          } else {
-            canvasContext.lineTo(...coords);
-          }
+      const shape = mfcc.map((v) => mapRange(featureRanges.mfcc, shapeRanges.line, v));
+      for (let i = 0; i < numCoefs; i++) {
+        const coords = getCoord(c, angleStep, R, shape, i);
+        if (i === 0) {
+          canvasContext.moveTo(...coords);
+        } else {
+          canvasContext.lineTo(...coords);
         }
-        canvasContext.lineTo(...getCoord(c, angleStep, R, shape, 0));
-        canvasContext.fill();
       }
+      canvasContext.lineTo(...getCoord(c, angleStep, R, shape, 0));
+      canvasContext.fill();
 
       requestAnimationFrame(drawCycle);
     };
@@ -94,7 +91,7 @@ class Visualizer extends Component {
     return <canvas
       ref={this.ref}
       id="main-canvas"
-      style={{cursor: 'pointer'}}
+      style={{cursor: 'pointer', backgroundColor: 'black'}}
       onClick={() => {
         this.props.onShapeClick();
       }

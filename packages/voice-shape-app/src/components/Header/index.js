@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
+import {H1} from '../styled';
 
 class Header extends Component {
 
   render() {
     return (
       <div>
-        <h1>Voice Shape</h1>
+        <H1>Voice Shape</H1>
       </div>
     );
   }
