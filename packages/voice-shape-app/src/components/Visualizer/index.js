@@ -15,6 +15,27 @@ const clamp = (range, v) => {
   }
   return v;
 };
+const getRatio = (canvasContext) => {
+    const dpr = window.devicePixelRatio || 1;
+    const bsr = canvasContext.webkitBackingStorePixelRatio ||
+      canvasContext.mozBackingStorePixelRatio ||
+      canvasContext.msBackingStorePixelRatio ||
+      canvasContext.oBackingStorePixelRatio ||
+      canvasContext.backingStorePixelRatio || 1;
+
+  return dpr / bsr;
+};
+const setCanvasSize = (canvasContext, W, H) => {
+  const ratio = getRatio(canvasContext);
+  canvasContext.canvas.width = W;
+  canvasContext.canvas.height = H;
+  canvasContext.canvas.width = W * ratio;
+  canvasContext.canvas.height = H * ratio;
+  canvasContext.canvas.style.width = W + 'px';
+  canvasContext.canvas.style.height = H + 'px';
+  canvasContext.setTransform(ratio, 0, 0, ratio, 0, 0);
+};
+
 const mapRange = (fromRange, toRange, number) =>
   (clamp(fromRange, number) - fromRange[0]) * (toRange[1] - toRange[0]) / (fromRange[1] - fromRange[0]) + toRange[0];
 
@@ -32,12 +53,13 @@ const shapeRanges = {
   colorIndex: [0, 19]
 };
 
-// const numShapes = 16;
 const alpha = 1;
 const colors = multiGradient(
   shapeRanges.colorIndex[1] - shapeRanges.colorIndex[0],
   [[1, 0, 128], [241, 73, 0], [0, 128, 1], [247, 235, 1], [240, 0, 1]].map(rgb2hsl),
 ).map(hsl => hsl2css(alpha, hsl));
+const introText = ['Say "Hello, Hello, Hello"!', 'Shape is based on your voice timbre and color on pitch.'];
+const font = '40px "Exo 2"';
 
 class Visualizer extends Component {
   static propTypes = {
@@ -55,8 +77,7 @@ class Visualizer extends Component {
 
   componentDidMount() {
     const canvasContext = this.ref.current.getContext('2d');
-    canvasContext.canvas.width = W;
-    canvasContext.canvas.height = H;
+    setCanvasSize(canvasContext, W, H);
     const c = {
       x: W / 2,
       y: H / 2 - 50
@@ -65,6 +86,15 @@ class Visualizer extends Component {
     const R = 100;
     const drawCycle = () => {
       const {mfcc, spectralCentroid} = this.props.features;
+      if (!spectralCentroid) {
+        canvasContext.font = font;
+        canvasContext.fillStyle = 'white';
+        canvasContext.textAlign = 'center';
+        canvasContext.fillText(introText[0], c.x, c.y);
+        canvasContext.fillText(introText[1], c.x, c.y + 80);
+        return requestAnimationFrame(drawCycle);
+
+      }
       const angleStep = 2 * Math.PI / numCoefs;
       canvasContext.clearRect(0, 0, W, H);
       const colorIndex = Math.floor(mapRange(featureRanges.spectralCentroid, shapeRanges.colorIndex, spectralCentroid));
@@ -83,7 +113,7 @@ class Visualizer extends Component {
       canvasContext.lineTo(...getCoord(c, angleStep, R, shape, 0));
       canvasContext.fill();
 
-      requestAnimationFrame(drawCycle);
+      return requestAnimationFrame(drawCycle);
     };
     drawCycle();
   }
@@ -91,7 +121,7 @@ class Visualizer extends Component {
     return <canvas
       ref={this.ref}
       id="main-canvas"
-      style={{cursor: 'pointer', backgroundColor: 'black'}}
+      style={{cursor: 'pointer', backgroundColor: 'black', font, width: '100%', height: '100%'}}
       onClick={() => {
         this.props.onShapeClick();
       }

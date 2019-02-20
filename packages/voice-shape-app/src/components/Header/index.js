@@ -1,5 +1,11 @@
 import React, {Component} from 'react';
-import {H1} from '../styled';
+import styled from 'styled-components';
+
+const H1 = styled.h1`
+ font-family: 'Ceviche One', cursive;
+ font-size: 5rem;
+ margin: 0;
+`;
 
 class Header extends Component {
 
