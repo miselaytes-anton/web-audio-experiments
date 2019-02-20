@@ -46,9 +46,10 @@ class Recorder extends Component {
   };
 
   render() {
-    const {isRecording} = this.state;
-    const color = isRecording ? 'red' : 'black';
-    return <FaMicrophone style={{fontSize: '3rem', cursor: 'pointer', color}} onClick={this.onButtonClick} />;
+    const {isRecording, audioIsResumed} = this.state;
+    const isFirstRecord = !audioIsResumed;
+    const className = isRecording ? 'pulse-recording' : (isFirstRecord && 'pulse');
+    return <FaMicrophone className={className} style={{fontSize: '3rem', cursor: 'pointer'}} onClick={this.onButtonClick} />;
   }
 }
 
