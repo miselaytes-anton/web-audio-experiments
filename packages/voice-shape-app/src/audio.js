@@ -1,12 +1,15 @@
 import Meyda from 'meyda';
 
-import {closestPowerOf2} from 'web-audio-utils';
+import {signalToFrames, singalPow2Len} from 'web-audio-utils';
+import {lbg} from './lbg';
 
-export const extractFeatures = signal => {
-  const signalOfSize = signal.slice(0, closestPowerOf2(signal.length));
-  const features = Meyda.extract(['mfcc', 'spectralCentroid'], signalOfSize)
-  console.log(features);
-  return features;
+export const extractFeatures = (signal, sampleRate) => {
+  const {spectralCentroid} = Meyda.extract(['spectralCentroid'], singalPow2Len(signal));
+  const frames = signalToFrames(signal, sampleRate, {});
+  const features = frames
+    .map(frame => Meyda.extract('mfcc', frame));
+  const codebook = lbg(features);
+  return {codebook, spectralCentroid};
 };
 
 export const playAudio = (audioContext, audioBuffer) => {
@@ -17,4 +20,3 @@ export const playAudio = (audioContext, audioBuffer) => {
     source.start();
   }
 };
-

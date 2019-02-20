@@ -23,10 +23,11 @@ export const getAudioContext = () => {
 };
 
 export const closestPowerOf2 = number => 2 ** Math.floor(Math.log2(number));
+export const singalPow2Len = signal => signal.slice(0, closestPowerOf2(signal.length));
 
 const msToNumSamples = (ms, sampleRate) => sampleRate * ms / 1000;
-
-export const signalToFrames = (signal, sampleRate, {frameLengthMs = 25, overlapLengthMs = 10}) => {
+export const signalToFrames = (signal, sampleRate, opts = {}) => {
+  const {frameLengthMs = 25, overlapLengthMs = 10} = opts;
   const frameLengthSamples = closestPowerOf2(msToNumSamples(frameLengthMs, sampleRate));
   const overlapLengthSamples = overlapLengthMs ? closestPowerOf2(msToNumSamples(overlapLengthMs, sampleRate)) : 0;
   let frames = [];

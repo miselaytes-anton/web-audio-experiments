@@ -10,12 +10,10 @@ const voiceApp = (state, action) => {
         action.audioBuffer.sampleRate,
         {threshold: -80, minSilenceDuration: 500}
       );
-      //eslint-disable-next-line
-      let noSilenceBuffer = signalToBuffer(state.audioContext, noSilenceSignal);
       return {
         ...state,
-        audioBuffer: noSilenceBuffer,
-        features: extractFeatures(noSilenceSignal)
+        audioBuffer: signalToBuffer(state.audioContext, noSilenceSignal),
+        features: extractFeatures(noSilenceSignal, action.audioBuffer.sampleRate)
       };
     default:
       return state;
