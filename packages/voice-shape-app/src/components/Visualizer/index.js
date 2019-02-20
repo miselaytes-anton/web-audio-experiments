@@ -46,12 +46,12 @@ const getCoord = (circleCenter, angleStep, R, values, i) =>
     circleCenter.y + Math.cos(angleStep * i) * (R + values[i])
   ]);
 const featureRanges = {
-  spectralCentroid: [130, 250],
+  spectralCentroid: [20, 70].map(Math.log2),
   mfcc: [-10, 10],
 };
 const shapeRanges = {
   line: [0, 100],
-  colorIndex: [0, 19]
+  colorIndex: [0, 9]
 };
 
 const alpha = 1;
@@ -98,7 +98,7 @@ class Visualizer extends Component {
       }
       const angleStep = 2 * Math.PI / numCoefs;
       canvasContext.clearRect(0, 0, W, H);
-      const colorIndex = Math.floor(mapRange(featureRanges.spectralCentroid, shapeRanges.colorIndex, spectralCentroid));
+      const colorIndex = Math.floor(mapRange(featureRanges.spectralCentroid, shapeRanges.colorIndex, Math.log2(spectralCentroid)));
       canvasContext.fillStyle = spectralCentroid ? colors[colorIndex] : 'black';
       canvasContext.beginPath();
 
