@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import connect from 'react-redux/es/connect/connect';
 import {multiGradient, rgb2hsl, hsl2css} from 'kandinsky-js';
 import {playAudio} from '../../audio';
+import playIcon from '../../../assets/play.png';
 
 const W = window.innerWidth;
 const H = window.innerHeight * 0.7;
@@ -86,6 +87,7 @@ class Visualizer extends Component {
     const R = 100;
     const drawCycle = () => {
       const {mfcc, spectralCentroid} = this.props.features;
+      canvasContext.canvas.style.cursor = spectralCentroid ? `url(${playIcon}), auto` : 'auto';
       if (!spectralCentroid) {
         canvasContext.font = font;
         canvasContext.fillStyle = 'white';
@@ -93,7 +95,6 @@ class Visualizer extends Component {
         canvasContext.fillText(introText[0], c.x, c.y);
         canvasContext.fillText(introText[1], c.x, c.y + 80);
         return requestAnimationFrame(drawCycle);
-
       }
       const angleStep = 2 * Math.PI / numCoefs;
       canvasContext.clearRect(0, 0, W, H);
@@ -121,7 +122,7 @@ class Visualizer extends Component {
     return <canvas
       ref={this.ref}
       id="main-canvas"
-      style={{cursor: 'pointer', backgroundColor: 'black', font, width: '100%', height: '100%'}}
+      style={{backgroundColor: 'black', font, width: '100%', height: '100%'}}
       onClick={() => {
         this.props.onShapeClick();
       }
@@ -131,5 +132,8 @@ class Visualizer extends Component {
 }
 
 export default connect(
-  state => ({onShapeClick: () => playAudio(state.audioContext, state.audioBuffer), features: state.features}),
+  state => ({
+    onShapeClick: () => playAudio(state.audioContext, state.audioBuffer),
+    features: state.features,
+  }),
 )(Visualizer);
