@@ -1,6 +1,6 @@
 # Web Audio Experiments
 
-Various experiments with Web Audio API.
+Various experiments with Web Audio.
 
 [Demos & Docs](https://amiselaytes.com/webaudio)
 
