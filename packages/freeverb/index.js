@@ -1,6 +1,6 @@
-const CompositeAudioNode = require('./composite-audio-node');
-const mergeParams = require('./merge-params');
-const LowpassCombFilter = require('./low-pass-comb-filter');
+import CompositeAudioNode from './composite-audio-node';
+import mergeParams from './merge-params';
+import LowpassCombFilter from './low-pass-comb-filter';
 
 // Freeverb params defined by Mr. Shroeder
 const SAMPLE_RATE = 44100;
@@ -14,7 +14,7 @@ const getAllPass = (audioCtx, freq) => {
   return allPass;
 };
 
-module.exports = class Freeverb extends CompositeAudioNode {
+export default class Freeverb extends CompositeAudioNode {
 
   get wetGain () {
     return this._wet.gain;
@@ -65,6 +65,5 @@ module.exports = class Freeverb extends CompositeAudioNode {
     .connect(allPassFilters[2])
     .connect(allPassFilters[3])
     .connect(this._output);
-
   }
-};
+}

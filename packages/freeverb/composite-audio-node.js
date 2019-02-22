@@ -1,7 +1,7 @@
 //based on https://github.com/GoogleChromeLabs/web-audio-samples/wiki/CompositeAudioNode
 //with little adjustments to allow chained connect syntax, e.g node1.connect(node2).connect(node3)
 
-module.exports = class CompositeAudioNode {
+export default class CompositeAudioNode {
 
   get _isCompositeAudioNode () {
     return true;
@@ -21,7 +21,7 @@ module.exports = class CompositeAudioNode {
     this._output.disconnect.apply(this._output, arguments);
   }
 }
-if (typeof window === 'object') {
+if (typeof window === 'object' && !AudioNode.prototype.connectIsModified) {
   AudioNode.prototype._connect = AudioNode.prototype.connect;
   AudioNode.prototype.connect = function () {
     const args = Array.prototype.slice.call(arguments);
@@ -33,4 +33,6 @@ if (typeof window === 'object') {
 
     return args[0];
   };
+  AudioNode.prototype.connectIsModified = true;
 }
+

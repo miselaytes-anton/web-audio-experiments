@@ -5,7 +5,7 @@
  * @param {Array} params - array of audio params
  * @returns {{}}
  */
-module.exports = function (params) {
+export default function (params) {
   const singleParam = params[0];
   const parameter = {};
   const audioNodeMethods = Object.getOwnPropertyNames(AudioParam.prototype)

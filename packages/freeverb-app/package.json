@@ -3,18 +3,28 @@
   "version": "0.0.0",
   "dependencies": {
     "freeverb": "0.0.0",
-    "nouislider": "^11.1.0"
+    "nouislider": "^11.1.0",
+    "web-audio-utils": "^0.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.3",
-    "browserify": "^16.2.2",
     "eslint": "^4.19.1",
     "eslint-config-standard-react": "^6.0.0",
     "eslint-config-warp": "^2.1.1",
-    "serve": "^7.2.0"
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "babel-loader": "^8.0.4",
+    "clean-webpack-plugin": "^0.1.19",
+    "html-webpack-plugin": "^3.2.0",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.9",
+    "css-loader": "^1.0.0",
+    "style-loader": "^0.23.1"
   },
   "scripts": {
-    "build": "bash ./build.sh",
-    "start": "serve build"
+    "build": "NODE_ENV=production webpack",
+    "watch": "webpack --watch",
+    "start": "webpack-dev-server --open --https"
   }
 }

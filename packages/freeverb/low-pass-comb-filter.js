@@ -1,6 +1,6 @@
-const CompositeAudioNode = require('./composite-audio-node');
+import CompositeAudioNode from './composite-audio-node';
 
-module.exports = class LowPassCombFilter extends CompositeAudioNode {
+export default class LowPassCombFilter extends CompositeAudioNode {
 
   get resonance () {
     return this._gain.gain;
@@ -30,5 +30,4 @@ module.exports = class LowPassCombFilter extends CompositeAudioNode {
     .connect(this._output);
 
   }
-};
-
+}

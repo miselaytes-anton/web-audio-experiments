@@ -1,10 +1,8 @@
-const noUiSlider = require('nouislider');
+import noUiSlider from 'nouislider';
+import './nouislider.css';
 
-module.exports = {init};
-
-function init(freeverb, defaults) {
+export const init = (defaults, {onUnmuteClick, onRoomSizeUpdate, onDampeningUpdate, onWetUpdate, onDryUpdate}) => {
   const roomSizeSlider = document.getElementById('roomSize');
-
   noUiSlider.create(roomSizeSlider, {
     start: [defaults.roomSize],
     range: {
@@ -16,7 +14,7 @@ function init(freeverb, defaults) {
   });
 
   roomSizeSlider.noUiSlider.on('update', ([value]) => {
-    freeverb.roomSize.value = Number(value);
+    onRoomSizeUpdate(Number(value));
   });
 
   const dampeningSlider = document.getElementById('dampening');
@@ -33,7 +31,7 @@ function init(freeverb, defaults) {
   });
 
   dampeningSlider.noUiSlider.on('update', ([value]) => {
-    freeverb.dampening.value = Number(value);
+    onDampeningUpdate(Number(value));
   });
 
   const wetSlider = document.getElementById('wet');
@@ -49,7 +47,7 @@ function init(freeverb, defaults) {
   });
 
   wetSlider.noUiSlider.on('update', ([value]) => {
-    freeverb.wetGain.value = Number(value);
+    onWetUpdate(Number(value));
   });
 
   const drySlider = document.getElementById('dry');
@@ -65,6 +63,9 @@ function init(freeverb, defaults) {
   });
 
   drySlider.noUiSlider.on('update', ([value]) => {
-    freeverb.dryGain.value = Number(value);
+    onDryUpdate(Number(value));
   });
-}
+
+  const unmuteButton = document.getElementById('unmute');
+  unmuteButton.addEventListener('click', onUnmuteClick);
+};

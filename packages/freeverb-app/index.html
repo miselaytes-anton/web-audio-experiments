@@ -2,12 +2,13 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="node_modules/nouislider/distribute/nouislider.min.css">
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <link href="https://fonts.googleapis.com/css?family=Ceviche+One|Exo+2" rel="stylesheet">
     <style>
         body {
             text-align: center;
-            font-family: Arial, Helvetica, sans-serif;
-            background: tomato
+            font-family: 'Exo 2', sans-serif;
+            background: black
         }
 
         .ui {
@@ -15,41 +16,72 @@
             display: block;
             width: 300px;
             padding: 40px;
-            background: rgba(255, 255, 255, 0.7)
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 3px;
         }
         .intro {
-            font-size: 12px;
+            font-size: 0.8rem;
             margin-bottom: 30px;
+        }
+        h1 {
+            font-family: 'Ceviche One', cursive;
+            font-size: 4rem;
+            margin: 0;
+        }
+        label {
+            font-family: 'Ceviche One', cursive;
+            font-size: 2rem;
+        }
+        button {
+            min-width: 110px;
+            display: inline-block;
+            border-radius: 3px;
+            padding: 0.5rem;
+            background: black;
+            color: white;
+            cursor: pointer;
+            border: 2px solid black;
+        }
+        button:hover {
+            color: black;
+            background: white;
+        }
+        button:disabled {
+            color: white;
+            background: #ccc;
+            border: none;
+            cursor: no-drop;
+        }
+        section {
+            margin-bottom: 1.2rem;
         }
     </style>
 </head>
 
 <body>
     <div class="ui">
-        <h2>FREEVERB DEMO</h2>
+        <h1>FREEVERB</h1>
         <p class="intro">
             Please use <strong>headphones</strong>. Snap your fingers near a mic or connect an instrument to line-in.
         </p>
-        <section style="margin-bottom: 50px;">
+        <section>
             <label>ROOM SIZE</label>
             <div id="roomSize" style="width:100%"></div>
         </section>
-        <section style="margin-bottom: 50px;">
+        <section >
             <label>DAMPENING</label>
             <div id="dampening" style="width:100%"></div>
         </section>
-        <section style="margin-bottom: 50px;">
+        <section >
             <label>WET</label>
             <div id="wet" style="width:100%"></div>
         </section>
-        <section style="margin-bottom: 50px;">
+        <section >
             <label>DRY</label>
             <div id="dry" style="width:100%"></div>
         </section>
-        <button onclick="freeverb.turnon()">UNMUTE</button>
+        <button id="unmute" >UNMUTE</button>
     </div>
-
-    <script src="bundle.js"></script>
 </body>
 
 </html>

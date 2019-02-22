@@ -5,7 +5,7 @@ A Web Audio implementation of [Freeverb](https://ccrma.stanford.edu/~jos/pasp/Fr
 ![freeverb](./freeverb.png)
 ```javascript
 //create an instance
-const Freeverb = require('Cassowary').Freeverb
+const Freeverb = require('Freeverb')
 const audioCtx = new AudioContext()
 const opts = { dampening: 3000, roomSize: 0.7, dryGain: 0.2, wetGain: 0.8 }
 const freeverb = new Freeverb(audioCtx, opts)
