@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {connect} from 'react-redux';
 import {audioBufferLoaded, audioBufferLoading} from '../../actions';
-import {getAudioBuffer} from '../../../../web-audio-utils';
-import {randomTrack} from '../../util';
+import {getAudioBuffer, getRandomTrack} from 'web-audio-utils';
 
 const Button = styled.button`
   min-width: 110px;
@@ -39,7 +38,7 @@ const Header = ({loadAudioSource, audioBuffer, trackIsLoading}) =>
   <div style={{display: 'flex', fontFamily: 'Helvetica,Arial,sans-serif', padding: '10px 50px', fontSize: '13px'}}>
     <Button disabled={trackIsLoading} onClick={() => {
       audioContext.resume().then(() => {
-        loadAudioSource(audioContext, randomTrack());
+        loadAudioSource(audioContext, getRandomTrack());
       });
     }} > {trackIsLoading ? 'LOADING TRACK..' : (audioBuffer ? 'CHANGE TRACK' : 'START')} </Button>
     <span style={{marginLeft: 'auto', marginRight: `${window.innerWidth / 12}px`, padding: '10px 0'}}>

@@ -1,7 +1,3 @@
-import tracks from './tracks.json';
-import {sample} from 'lodash';
-
-export const randomTrack = () => `https://amiselaytes.com/lomax/audio/${sample(tracks)}.mp3`;
 export const degToRad = deg => deg * Math.PI / 180;
 export const radToDeg = rad => rad * 180 / Math.PI;
 

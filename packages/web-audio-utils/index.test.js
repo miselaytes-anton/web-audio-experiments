@@ -6,7 +6,7 @@ describe('removeSilence', () => {
     const signal = [0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0];
     const sampleRate = 40;
     const expectedSignal = [1, 1, 1, 0, 1, 1, 1, 1];
-    const withoutSilence = removeSilence(signal, sampleRate, {minSilenceDuration: 25, threshold: 0.1})
+    const withoutSilence = removeSilence(signal, sampleRate, {minSilenceDuration: 25, threshold: -100});
     assert.deepStrictEqual(withoutSilence, expectedSignal);
   });
 });

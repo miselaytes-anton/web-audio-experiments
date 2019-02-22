@@ -16,7 +16,7 @@ describe('util', () => {
       assert.deepStrictEqual(angleToCoord(0), [1, 0]);
       assert.deepStrictEqual(angleToCoord(180), [-1, 0]);
       assert.deepStrictEqual(angleToCoord(90), [0, 1]);
-      assert.deepStrictEqual(angleToCoord(270), [0, -1]);
+      assert.deepStrictEqual(angleToCoord(270), [-0, -1]);
     });
   });
 

@@ -2,12 +2,12 @@
   "name": "voice-shape-app",
   "version": "0.0.1",
   "scripts": {
-    "test": "jest src/**.test.js",
     "build": "NODE_ENV=production webpack",
     "watch": "webpack --watch",
     "start": "webpack-dev-server --open --https"
   },
   "dependencies": {
+    "kandinsky-js": "^1.3.0",
     "lodash": "^4.17.11",
     "meyda": "^4.2.0",
     "react": "^16.5.2",

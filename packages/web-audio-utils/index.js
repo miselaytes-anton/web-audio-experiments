@@ -10,10 +10,9 @@ export const getAudioBuffer = (audioCtx, url) => {
 };
 
 export const getLiveAudio = (audioCtx, opts = {}) => navigator.mediaDevices.getUserMedia({audio: {
-  autoGainControl: false,
-  echoCancellation: false,
-  noiseSuppression: false,
-  ...opts
+  autoGainControl: opts.autoGainControl || false,
+  echoCancellation: opts.echoCancellation || false,
+  noiseSuppression: opts.noiseSuppression || false,
 }})
 .then(stream => audioCtx.createMediaStreamSource(stream));
 
