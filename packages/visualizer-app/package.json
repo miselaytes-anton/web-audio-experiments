@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "kandinsky-js": "^1.3.0",
-    "lodash": "^4.17.11",
     "meyda": "^4.2.0",
     "ramda": "^0.26.1",
     "web-audio-utils": "^0.0.0"

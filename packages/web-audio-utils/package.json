@@ -5,9 +5,7 @@
     "test": "jest ./index.test.js"
   },
   "dependencies": {
-    "browserify": "^16.2.2",
-    "lodash.sample": "^4.2.1",
-    "serve": "^7.2.0"
+    "lodash.sample": "^4.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.3.3",

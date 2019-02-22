@@ -2,9 +2,10 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
+const isProduction = process.env.NODE_ENV === 'production';
 module.exports = {
   entry: './src/index.js',
-  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
+  mode: isProduction ? 'production' : 'development',
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'bundle.js'
@@ -16,7 +17,7 @@ module.exports = {
       template: 'index.html'
     })
   ],
-  devtool: 'inline-source-map',
+  devtool: isProduction ? 'source-map' : 'inline-source-map',
   devServer: {
     contentBase: './build'
   },
