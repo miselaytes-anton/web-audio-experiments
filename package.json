@@ -5,11 +5,12 @@
 		"eslint-config-standard-react": "^7.0.2",
 		"eslint-config-warp": "^3.0.0",
 		"eslint-plugin-react": "^7.11.1",
-		"lerna": "^2.11.0"
+		"lerna": "^2.11.0",
+		"markdown-styles": "^3.1.10"
 	},
 	"scripts": {
-		"bootstrap": "lerna bootstrap",
-		"build": "lerna run build --scope *-app",
+		"postinstall": "lerna bootstrap",
+		"build": "bash ./build.sh",
 		"test": "lerna run test"
 	}
 }

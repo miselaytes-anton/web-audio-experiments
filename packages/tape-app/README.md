@@ -1,5 +1,7 @@
-# Tape app
+## Tape app
 
-Inspired by [Thyme](https://www.bastl-instruments.com/instruments/thyme/)
+An experiment with tape delay and world music inspired by Thyme effects processor.
 
-![tape app screenshot](./tape-app.png)
+[demo](https://amiselaytes.com/webaudio/tape)
+
+[![tape app screenshot](./tape-app.png)](https://amiselaytes.com/webaudio/tape)

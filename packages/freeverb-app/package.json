@@ -14,7 +14,7 @@
     "serve": "^7.2.0"
   },
   "scripts": {
-    "build": "npx browserify index.js -o bundle.js --s freeverb",
-    "start": "serve"
+    "build": "bash ./build.sh",
+    "start": "serve build"
   }
 }

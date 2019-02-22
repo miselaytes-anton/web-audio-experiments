@@ -1,5 +1,7 @@
-# Loop app
+## Loop app
 
-https://amiselaytes.com/loop/
+Record and loop multiple audio tracks. Comes with colorful UI.
 
-![loop app screenshot](./loop-app.png)
+[demo](https://amiselaytes.com/webaudio/loop/)
+
+[![loop app screenshot](./loop-app.png)](https://amiselaytes.com/webaudio/loop)
