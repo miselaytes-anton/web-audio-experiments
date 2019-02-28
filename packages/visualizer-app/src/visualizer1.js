@@ -42,7 +42,9 @@ export const draw = canvasContext => {
 
   return (features, frameNum) => {
     const {mfcc, spectralCentroid, loudness} = features;
-    canvasContext.clearRect(0, 0, w, h);
+    canvasContext.fillStyle = 'rgba(0,0,0,0.1)';
+
+    canvasContext.fillRect(0, 0, w, h);
     canvasContext.beginPath();
     storeFeature('loudness', loudness);
     storeFeature('spectralCentroid', spectralCentroid);
