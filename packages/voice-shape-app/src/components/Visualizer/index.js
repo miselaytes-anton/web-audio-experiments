@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {multiGradient, rgb2hsl, hsl2css} from 'kandinsky-js';
+import {rLinearGradient, hex2rgb, rgb2hex} from 'kandinsky-js';
 import {playAudio} from '../../audio';
 import playIcon from '../../../assets/play.png';
 
@@ -54,11 +54,11 @@ const shapeRanges = {
   colorIndex: [0, 9]
 };
 
-const alpha = 1;
-const colors = multiGradient(
-  shapeRanges.colorIndex[1] - shapeRanges.colorIndex[0],
-  [[1, 0, 128], [241, 73, 0], [0, 128, 1], [247, 235, 1], [240, 0, 1]].map(rgb2hsl),
-).map(hsl => hsl2css(alpha, hsl));
+const colors = rLinearGradient(
+    shapeRanges.colorIndex[1] - shapeRanges.colorIndex[0],
+    hex2rgb('#f92104'),
+    hex2rgb('#f9f904'),
+).map(rgb2hex);
 const introText = ['Say "Hello, Hello, Hello"!', 'Shape is based on your voice timbre and color on pitch.'];
 const font = '40px "Exo 2"';
 
@@ -88,7 +88,7 @@ class Visualizer extends Component {
     const drawCycle = () => {
       const {mfcc, spectralCentroid} = this.props.features;
       canvasContext.canvas.style.cursor = spectralCentroid ? `url(${playIcon}), auto` : 'auto';
-      if (!spectralCentroid) {
+      if (spectralCentroid === null) {
         canvasContext.font = font;
         canvasContext.fillStyle = 'white';
         canvasContext.textAlign = 'center';
