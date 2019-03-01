@@ -13,7 +13,7 @@ export const draw = canvasContext => {
   setCanvasSize(canvasContext, w, h);
   const scaleForHeight = scale(h);
   canvasContext.lineWidth = scaleForHeight(0.25);
-  canvasContext.strokeStyle = `rgba(255,255,255, 0.7)`;
+  canvasContext.strokeStyle = 'rgba(255,255,255, 0.7)';
   const visualRanges = {
     lineLengthCoef: [0.5, 1.5].map(scaleForHeight),
     R: [20, 60].map(scaleForHeight),

@@ -4,8 +4,8 @@ import {connect} from 'react-redux';
 import {rLinearGradient, hex2rgb, rgb2hex} from 'kandinsky-js';
 import {playAudio} from '../../audio';
 import playIcon from '../../../assets/play.png';
-import {humanVoiceRange} from '../../constants'
-import {getRatio, setCanvasSize} from 'canvas-utils';
+import {humanVoiceRange} from '../../constants';
+import {setCanvasSize} from 'canvas-utils';
 
 const W = window.innerWidth;
 const H = window.innerHeight * 0.8;

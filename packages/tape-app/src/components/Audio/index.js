@@ -1,9 +1,6 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
-import {getAudioBuffer} from 'web-audio-utils';
-import {mapRange, randomTrack} from '../../util';
-import {audioBufferLoaded} from '../../actions';
+import {mapRange} from '../../util';
 
 import createVirtualAudioGraph, {
   delay,
@@ -42,11 +39,7 @@ const virtualAudioGraph = createVirtualAudioGraph({
   output: audioContext.destination,
 });
 
-class Audio extends Component {
-  static propTypes = {
-    loadAudioSource: PropTypes.func.isRequired,
-  };
-
+class Audio extends React.Component {
   render() {
     virtualAudioGraph.update(paramsToGraph(this.props));
     return null;
@@ -55,8 +48,4 @@ class Audio extends Component {
 
 export default connect(
   state => state,
-  dispatch => ({
-    loadAudioSource: (audioContext, url) =>
-      getAudioBuffer(audioContext, url).then(audioBuffer => dispatch(audioBufferLoaded(audioBuffer)))
-  })
 )(Audio);

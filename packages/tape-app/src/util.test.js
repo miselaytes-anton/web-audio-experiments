@@ -51,8 +51,8 @@ describe('util', () => {
   describe('clamp', () => {
     it('should clamp', () => {
       assert.deepStrictEqual(clamp([0, 10], -1), 0);
-      assert.deepStrictEqual(clamp([0,10], 5), 5);
-      assert.deepStrictEqual(clamp([0,10], 20), 10);
+      assert.deepStrictEqual(clamp([0, 10], 5), 5);
+      assert.deepStrictEqual(clamp([0, 10], 20), 10);
     });
   });
 });

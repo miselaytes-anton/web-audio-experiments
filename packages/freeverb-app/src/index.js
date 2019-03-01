@@ -1,4 +1,4 @@
-import Freeverb from 'freeverb';
+import Freeverb from '../../freeverb';
 import {init} from './ui';
 import {getLiveAudio, getAudioContext} from 'web-audio-utils';
 

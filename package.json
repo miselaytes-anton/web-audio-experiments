@@ -11,6 +11,7 @@
 	"scripts": {
 		"postinstall": "lerna bootstrap",
 		"build": "bash ./build.sh",
-		"test": "lerna run test"
+		"test": "lerna run test",
+		"lint": "lerna run lint"
 	}
 }

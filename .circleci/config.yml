@@ -25,6 +25,7 @@ jobs:
 
     # run tests and build
     - run: npm run test
+    - run: npm run lint
     - run: npm run build
     - persist_to_workspace:
         root: ~/repo

@@ -2,7 +2,8 @@
   "name": "web-audio-utils",
   "version": "0.0.0",
   "scripts": {
-    "test": "jest ./index.test.js"
+    "test": "jest ./index.test.js",
+    "lint": "eslint ./*.js"
   },
   "dependencies": {
     "lodash.sample": "^4.2.1"

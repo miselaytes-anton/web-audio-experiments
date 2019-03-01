@@ -1,8 +1,8 @@
 import './style.scss';
-const Recorder = require('./Recorder');
-const Scheduler = require('./Scheduler');
-const {draw} = require('./canvas');
-const store = require('./store');
+import Recorder from './Recorder';
+import Scheduler from './Scheduler';
+import {draw} from './canvas';
+import store from './store';
 const finishedTracks = tracks => tracks.filter(track => track.end);
 
 let STATE = store.getState();

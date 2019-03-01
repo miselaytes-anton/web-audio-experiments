@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "test": "jest ./src/**.test.js",
+    "lint": "eslint ./src/",
     "build": "NODE_ENV=production webpack",
     "watch": "webpack --watch",
     "start": "webpack-dev-server --open --https"

@@ -1,4 +1,4 @@
-const {createStore} = require('redux');
+import {createStore} from 'redux';
 const genId = () => Math.random().toString(36).substr(2, 9);
 
 const reducer = (state = {}, action) => {
@@ -39,4 +39,4 @@ const initialState = {
 
 const store = createStore(reducer, initialState);
 
-module.exports = store;
+export default store;

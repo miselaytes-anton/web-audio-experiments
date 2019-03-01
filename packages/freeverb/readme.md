@@ -2,7 +2,7 @@
 
 A Web Audio implementation of [Freeverb](https://ccrma.stanford.edu/~jos/pasp/Freeverb.html) (an algorithmic reverb)
 
-![freeverb](./freeverb.png)
+![freeverb](freeverb.png)
 ```javascript
 //create an instance
 const Freeverb = require('Freeverb')

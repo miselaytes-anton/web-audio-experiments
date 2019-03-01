@@ -1,15 +1,22 @@
 {
-  "extends": ["warp/es6", "warp/module", "warp/node"],
+  "extends": ["warp/es6", "warp/jsx"],
   "env": {
     "browser": true,
     "jest": true
   },
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
   "rules": {
     "class-methods-use-this": 0,
-    "max-len": 0,
-    "no-case-declarations": 0
-  },
-  "parserOptions": {
-    "sourceType": "module"
+    "template-curly-spacing" : 0,
+    "no-case-declarations": 0,
+    "indent" : "off",
+    "max-len": [1, 160]
   }
 }

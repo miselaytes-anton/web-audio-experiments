@@ -55,7 +55,7 @@ const line = (x1, y1, x2, y2, strokeStyle) => {
   ctx.restore();
 };
 
-const draw = (state) => {
+export const draw = (state) => {
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
   base(state.isRecording ? RED : BLACK);
   const from = [0, state.loopLength];
@@ -76,4 +76,3 @@ const draw = (state) => {
   );
 };
 
-module.exports = {draw};

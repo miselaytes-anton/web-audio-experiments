@@ -4,7 +4,8 @@
   "scripts": {
     "build": "NODE_ENV=production webpack",
     "watch": "webpack --watch",
-    "start": "webpack-dev-server --open --https"
+    "start": "webpack-dev-server --open --https",
+    "lint": "eslint ./src/"
   },
   "dependencies": {
     "redux": "^4.0.0"

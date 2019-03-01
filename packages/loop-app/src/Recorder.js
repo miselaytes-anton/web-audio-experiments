@@ -36,4 +36,4 @@ class Recorder {
   }
 }
 
-module.exports = Recorder;
+export default Recorder;
