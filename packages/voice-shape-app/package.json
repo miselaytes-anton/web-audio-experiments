@@ -16,7 +16,8 @@
     "react-redux": "^5.1.0",
     "redux": "^4.0.0",
     "styled-components": "^4.1.1",
-    "web-audio-utils": "^0.0.0"
+    "web-audio-utils": "^0.0.0",
+    "canvas-utils": "^0.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",

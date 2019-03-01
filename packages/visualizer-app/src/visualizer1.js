@@ -1,5 +1,6 @@
 import {mapParamRange, getFeatureStore, scale} from './utils';
 import {rLinearGradient, hex2rgb, rgb2hex} from 'kandinsky-js';
+import {setCanvasSize} from 'canvas-utils';
 
 const featureRanges = {
   spectralCentroid: [240, 260],
@@ -24,8 +25,7 @@ const weights = [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2];
 export const draw = canvasContext => {
   const w = window.innerWidth;
   const h = window.innerHeight;
-  canvasContext.canvas.width = w;
-  canvasContext.canvas.height = h;
+  setCanvasSize(canvasContext, w, h);
   const scaleForHeight = scale(h);
   const visualRanges = {
     R: [3, 15].map(scaleForHeight),

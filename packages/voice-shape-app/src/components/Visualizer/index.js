@@ -5,6 +5,7 @@ import {rLinearGradient, hex2rgb, rgb2hex} from 'kandinsky-js';
 import {playAudio} from '../../audio';
 import playIcon from '../../../assets/play.png';
 import {humanVoiceRange} from '../../constants'
+import {getRatio, setCanvasSize} from 'canvas-utils';
 
 const W = window.innerWidth;
 const H = window.innerHeight * 0.8;
@@ -16,24 +17,6 @@ const clamp = (range, v) => {
     return range[1];
   }
   return v;
-};
-const getRatio = (canvasContext) => {
-    const dpr = window.devicePixelRatio || 1;
-    const bsr = canvasContext.webkitBackingStorePixelRatio ||
-      canvasContext.mozBackingStorePixelRatio ||
-      canvasContext.msBackingStorePixelRatio ||
-      canvasContext.oBackingStorePixelRatio ||
-      canvasContext.backingStorePixelRatio || 1;
-
-  return dpr / bsr;
-};
-const setCanvasSize = (canvasContext, W, H) => {
-  const ratio = getRatio(canvasContext);
-  canvasContext.canvas.width = W * ratio;
-  canvasContext.canvas.height = H * ratio;
-  canvasContext.canvas.style.width = W + 'px';
-  canvasContext.canvas.style.height = H + 'px';
-  canvasContext.setTransform(ratio, 0, 0, ratio, 0, 0);
 };
 
 const mapRange = (fromRange, toRange, number) =>

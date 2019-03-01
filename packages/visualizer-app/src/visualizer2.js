@@ -1,4 +1,5 @@
 import {mapParamRange, getFeatureStore, scale} from './utils';
+import {setCanvasSize} from 'canvas-utils';
 
 const featureRanges = {
   rms: [0, 1]
@@ -9,9 +10,8 @@ const {storeFeature, getFeature} = getFeatureStore(20);
 export const draw = canvasContext => {
   const w = window.innerWidth;
   const h = window.innerHeight;
+  setCanvasSize(canvasContext, w, h);
   const scaleForHeight = scale(h);
-  canvasContext.canvas.width = w;
-  canvasContext.canvas.height = h;
   canvasContext.lineWidth = scaleForHeight(0.25);
   canvasContext.strokeStyle = `rgba(255,255,255, 0.7)`;
   const visualRanges = {
