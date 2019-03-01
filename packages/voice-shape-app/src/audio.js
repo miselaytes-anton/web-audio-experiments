@@ -1,15 +1,18 @@
 import Meyda from 'meyda';
 
-import {signalToFrames} from 'web-audio-utils';
+import {signalToFrames, getF0} from 'web-audio-utils';
 import {vAvg, avg} from './lbg';
+import {humanVoiceRange} from './constants';
 
 export const extractFeatures = (signal, sampleRate) => {
+  Meyda.bufferSize = 2048;
   const frames = signalToFrames(signal, sampleRate, {});
   const mfcc = frames
     .map(frame => Meyda.extract('mfcc', frame));
-  const spectralCentroid = frames
-    .map(frame => Meyda.extract('spectralCentroid', frame));
-  return {mfcc: vAvg(mfcc), spectralCentroid: avg(spectralCentroid)};
+  const f0 = frames
+      .map(frame => Meyda.extract('amplitudeSpectrum', frame))
+      .map(binsPerFrame => getF0(binsPerFrame, sampleRate, humanVoiceRange));
+  return {mfcc: vAvg(mfcc), f0: avg(f0)};
 };
 
 export const playAudio = (audioContext, audioBuffer) => {

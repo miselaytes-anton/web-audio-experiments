@@ -1,5 +1,6 @@
 const {sum, flatMap, groupBy, values} = require('lodash');
 
+export const max = arr => Math.max(...arr);
 export const avg = arr => sum(arr) / arr.length;
 const vScale = (arr, scaleC) => arr.map(item => item * scaleC);
 const vAdd = vectors => vectors.reduce((vSum, vector) =>

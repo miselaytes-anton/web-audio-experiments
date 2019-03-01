@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {rLinearGradient, hex2rgb, rgb2hex} from 'kandinsky-js';
 import {playAudio} from '../../audio';
 import playIcon from '../../../assets/play.png';
+import {humanVoiceRange} from '../../constants'
 
 const W = window.innerWidth;
 const H = window.innerHeight * 0.7;
@@ -46,8 +47,8 @@ const getCoord = (circleCenter, angleStep, R, values, i) =>
     circleCenter.y + Math.cos(angleStep * i) * (R + values[i])
   ]);
 const featureRanges = {
-  spectralCentroid: [20, 70].map(Math.log2),
   mfcc: [-10, 10],
+  f0: humanVoiceRange
 };
 const shapeRanges = {
   line: [0, 100],
@@ -86,9 +87,9 @@ class Visualizer extends Component {
     const numCoefs = 13;
     const R = 100;
     const drawCycle = () => {
-      const {mfcc, spectralCentroid} = this.props.features;
-      canvasContext.canvas.style.cursor = spectralCentroid ? `url(${playIcon}), auto` : 'auto';
-      if (spectralCentroid === null) {
+      const {mfcc, f0} = this.props.features;
+      canvasContext.canvas.style.cursor = f0 ? `url(${playIcon}), auto` : 'auto';
+      if (f0 === null) {
         canvasContext.font = font;
         canvasContext.fillStyle = 'white';
         canvasContext.textAlign = 'center';
@@ -98,8 +99,8 @@ class Visualizer extends Component {
       }
       const angleStep = 2 * Math.PI / numCoefs;
       canvasContext.clearRect(0, 0, W, H);
-      const colorIndex = Math.floor(mapRange(featureRanges.spectralCentroid, shapeRanges.colorIndex, Math.log2(spectralCentroid)));
-      canvasContext.fillStyle = spectralCentroid ? colors[colorIndex] : 'black';
+      const colorIndex = Math.floor(mapRange(featureRanges.f0, shapeRanges.colorIndex, f0));
+      canvasContext.fillStyle = f0 ? colors[colorIndex] : 'black';
       canvasContext.beginPath();
 
       const shape = mfcc.map((v) => mapRange(featureRanges.mfcc, shapeRanges.line, v));

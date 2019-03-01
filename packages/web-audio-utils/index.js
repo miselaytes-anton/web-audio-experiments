@@ -1,5 +1,6 @@
 import tracks from './tracks';
 import sample from 'lodash.sample';
+import {max} from '../voice-shape-app/src/lbg';
 
 export const getRandomTrack = () => `https://amiselaytes.com/lomax/audio/${sample(tracks)}.mp3`;
 
@@ -80,4 +81,16 @@ export const signalToBuffer = (audioContext, signal) => {
 export const removeSilenceFromBuffer = (audioBuffer, audioContext, opts = {}) => {
   const signalWithoutSilence = removeSilence(audioBuffer.getChannelData(0), audioBuffer.sampleRate, opts);
   return signalToBuffer(audioContext, signalWithoutSilence);
+};
+
+export const freqToBin = (freq, sampleRate, fftSize) => Math.round(freq / sampleRate * fftSize);
+export const binToFreq = (bin, sampleRate, fftSize) => bin * sampleRate / fftSize;
+
+export const getF0 = (fftBins, sampleRate, freqRange) => {
+  const fftSize = fftBins.length * 2;
+  const binsToAnalyze = freqRange
+    ? fftBins.slice(...freqRange.map(freq => freqToBin(freq, sampleRate, fftSize)))
+    : fftBins;
+  const maxVal = max(binsToAnalyze);
+  return binToFreq(fftBins.indexOf(maxVal), sampleRate, fftSize);
 };
