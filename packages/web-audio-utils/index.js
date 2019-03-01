@@ -1,6 +1,5 @@
 import tracks from './tracks';
 import sample from 'lodash.sample';
-import {max} from '../voice-shape-app/src/lbg';
 
 export const getRandomTrack = () => `https://amiselaytes.com/lomax/audio/${sample(tracks)}.mp3`;
 
@@ -22,10 +21,19 @@ export const getAudioContext = () => {
   return Ctx ? new Ctx() : null;
 };
 
+export const max = arr => Math.max(...arr);
+export const sum = arr => arr.reduce((sum, curr) => sum + curr, 0);
+export const avg = arr => sum(arr) / arr.length;
+const vScale = (arr, scaleC) => arr.map(item => item * scaleC);
+const vAdd = vectors => vectors.reduce((vSum, vector) =>
+  vector.map((value, i) => value + (vSum[i] || 0)),
+[]);
+export const vAvg = vectors => vScale(vAdd(vectors), 1 / vectors.length);
+
 export const closestPowerOf2 = number => 2 ** Math.floor(Math.log2(number));
 export const singalPow2Len = signal => signal.slice(0, closestPowerOf2(signal.length));
 
-const msToNumSamples = (ms, sampleRate) => sampleRate * ms / 1000;
+export const msToNumSamples = (ms, sampleRate) => sampleRate * ms / 1000;
 export const signalToFrames = (signal, sampleRate, opts = {}) => {
   const {frameLengthMs = 25, overlapLengthMs = 10} = opts;
   const frameLengthSamples = closestPowerOf2(msToNumSamples(frameLengthMs, sampleRate));
@@ -37,8 +45,6 @@ export const signalToFrames = (signal, sampleRate, opts = {}) => {
   return frames;
 };
 
-const sum = arr => arr.reduce((sum, curr) => sum + curr, 0);
-const avg = arr => sum(arr) / arr.length;
 const getRms = signal => avg(signal.map(v => v ** 2)) ** 1 / 2;
 const toDb = v => 20 * Math.log10(v);
 export const removeSilence = (signal, sampleRate, opts = {}) => {

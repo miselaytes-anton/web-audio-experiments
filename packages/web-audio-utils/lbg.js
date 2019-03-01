@@ -1,11 +1,10 @@
 const {sum, flatMap, groupBy, values} = require('lodash');
 
-export const max = arr => Math.max(...arr);
 export const avg = arr => sum(arr) / arr.length;
 const vScale = (arr, scaleC) => arr.map(item => item * scaleC);
 const vAdd = vectors => vectors.reduce((vSum, vector) =>
-    vector.map((value, i) => value + (vSum[i] || 0)),
-  []);
+  vector.map((value, i) => value + (vSum[i] || 0)),
+[]);
 export const vAvg = vectors => vScale(vAdd(vectors), 1 / vectors.length);
 
 /**
@@ -15,8 +14,8 @@ export const vAvg = vectors => vScale(vAdd(vectors), 1 / vectors.length);
  * @returns {[[number]]} with double the length of codebook array
  */
 const splitCentroids = (codebook, eps) => codebook.reduce((codebook, centroid) =>
-    codebook.concat([vScale(centroid, 1 + eps), vScale(centroid, 1 - eps)]),
-  []
+  codebook.concat([vScale(centroid, 1 + eps), vScale(centroid, 1 - eps)]),
+[]
 );
 
 const centroidIsStable = (prevDistortion, currDistortion, eps) => (prevDistortion - currDistortion) / prevDistortion < eps;

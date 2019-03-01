@@ -1,7 +1,6 @@
 import Meyda from 'meyda';
 
-import {signalToFrames, getF0} from 'web-audio-utils';
-import {vAvg, avg} from './lbg';
+import {signalToFrames, getF0, vAvg, avg} from 'web-audio-utils';
 import {humanVoiceRange} from './constants';
 
 export const extractFeatures = (signal, sampleRate) => {
