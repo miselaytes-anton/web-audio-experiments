@@ -13,6 +13,5 @@ export const FlexContainer = styled.div`
   flex-direction: column;
 `;
 export const FlexItem = styled.div`
-  margin: 10px;
   text-align: center;
 `;

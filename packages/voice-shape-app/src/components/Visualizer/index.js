@@ -7,7 +7,7 @@ import playIcon from '../../../assets/play.png';
 import {humanVoiceRange} from '../../constants'
 
 const W = window.innerWidth;
-const H = window.innerHeight * 0.7;
+const H = window.innerHeight * 0.8;
 const clamp = (range, v) => {
   if (v < range[0]) {
     return range[0];
@@ -29,8 +29,6 @@ const getRatio = (canvasContext) => {
 };
 const setCanvasSize = (canvasContext, W, H) => {
   const ratio = getRatio(canvasContext);
-  canvasContext.canvas.width = W;
-  canvasContext.canvas.height = H;
   canvasContext.canvas.width = W * ratio;
   canvasContext.canvas.height = H * ratio;
   canvasContext.canvas.style.width = W + 'px';

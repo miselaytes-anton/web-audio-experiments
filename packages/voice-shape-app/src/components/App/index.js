@@ -10,9 +10,9 @@ class App extends Component {
   render() {
     return (
       <FlexContainer>
-        <FlexItem style={{height: '20%'}}><Header /></FlexItem>
+        <FlexItem style={{height: '10%'}}><Header /></FlexItem>
         <FlexItem style={{height: '10%'}}><Recorder /></FlexItem>
-        <FlexItem style={{height: '70%'}}><Visualizer /></FlexItem>
+        <FlexItem style={{height: '80%'}}><Visualizer /></FlexItem>
       </FlexContainer>
     );
   }
