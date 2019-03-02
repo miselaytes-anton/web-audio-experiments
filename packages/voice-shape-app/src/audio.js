@@ -4,10 +4,13 @@ import {signalToFrames, getF0, vAvg, avg} from 'web-audio-utils';
 import {humanVoiceRange} from './constants';
 
 export const extractFeatures = (signal, sampleRate) => {
-  Meyda.bufferSize = 2048;
   const frames = signalToFrames(signal, sampleRate, {});
+
+  Meyda.bufferSize = 512;
   const mfcc = frames
     .map(frame => Meyda.extract('mfcc', frame));
+
+  Meyda.bufferSize = 2048;
   const f0 = frames
       .map(frame => Meyda.extract('amplitudeSpectrum', frame))
       .map(binsPerFrame => getF0(binsPerFrame, sampleRate, humanVoiceRange));
