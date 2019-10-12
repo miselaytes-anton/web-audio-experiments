@@ -1,30 +1,42 @@
 
-function getRandomArbitrary(min, max) {
+const getRandomArbitrary = (min, max) => {
   return Math.random() * (max - min) + min;
-}
+};
 
-function getRandomInt(min, max) {
+const getRandomInt = (min, max) => {
   min = Math.ceil(min);
   max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
-}
+  //The maximum is exclusive and the minimum is inclusive
+  return Math.floor(Math.random() * (max - min)) + min;
+};
 
 // const genB = document.getElementById('gen');
-const initB = document.getElementById('init');
+// const initB = document.getElementById('init');
 
-let ctx;
+const ctx = new AudioContext();
 
 const getRandomOscType = () => {
   const types = ['sine', 'square', 'sawtooth', 'triangle'];
   return types[getRandomInt(0, 4)];
 };
 
-var createNote = function(freq, offset) {
-  // envleope vars
-  var attack = getRandomArbitrary(0.01, 0.5);
-  var decay = getRandomArbitrary(0.01, 0.5);
-  var sustain = getRandomArbitrary(0.01, 0.5);
-  var release = getRandomArbitrary(0.01, 0.5);
+const getRandomParams = (i) => {
+  const freq = getRandomInt(100, 1000);
+  const offset = 0;
+  const filterFreq = freq * getRandomArbitrary(0.5, 2);
+  const attack = getRandomArbitrary(0.01, 0.5);
+  const decay = getRandomArbitrary(0.01, 0.5);
+  const sustain = getRandomArbitrary(0.01, 0.5);
+  const release = getRandomArbitrary(0.01, 0.5);
+  const mod1Type = getRandomOscType();
+  const mod2Type = getRandomOscType();
+  const oscType = getRandomOscType();
+  const mod1Detune = Math.random() * 300;
+  const mod2Detune = Math.random() * 300;
+  return {i, freq, offset, filterFreq, attack, decay, sustain, release, mod1Type, mod2Type, oscType, mod1Detune, mod2Detune};
+};
+var createNote = function({freq, offset, filterFreq, attack, decay, sustain, release, mod1Type, mod2Type, oscType, mod1Detune, mod2Detune}) {
+
   // timing vars
   var start = ctx.currentTime + (offset || 0);
   // create audio nodes
@@ -37,22 +49,22 @@ var createNote = function(freq, offset) {
   var filter = ctx.createBiquadFilter();
 
   filter.type = 'lowpass';
-  filter.frequency.setValueAtTime(freq * getRandomArbitrary(0.5, 2), ctx.currentTime);
+  filter.frequency.setValueAtTime(filterFreq, ctx.currentTime);
   filter.gain.setValueAtTime(25, ctx.currentTime);
 
   // mod settings
   mod1.frequency.value = freq * 0.5;
-  mod1.type = getRandomOscType();
-  mod1.detune = Math.random() * 300;
+  mod1.type = mod1Type;
+  mod1.detune = mod1Detune;
   mod1Gain.gain.value = freq / 3;
 
   mod2.frequency.value = freq * 0.25;
-  mod2.type = getRandomOscType();
-  mod2.detune = Math.random() * 300;
+  mod2.type = mod2Type;
+  mod2.detune = mod2Detune;
 
   // oscillator settings
   osc.frequency.value = freq;
-  osc.type = getRandomOscType();
+  osc.type = oscType;
 
   // route audio
   mod1.connect(mod1Gain);
@@ -77,13 +89,79 @@ var createNote = function(freq, offset) {
   osc.start(start);
 
 };
-const generate = () => {
-  if(!ctx) {
-    ctx = new AudioContext();
-  }
-  const rand = getRandomInt(100, 1000);
-  createNote(rand);
+
+const canvas = document.getElementById('the-canvas');
+const ctx2 = canvas.getContext('2d');
+
+const WIDTH = 1000;
+const HEIGHT = 500;
+
+const getColor = (i) =>{
+  const colors = [
+    'rgba(253, 197, 245, 0.8)',
+    'rgba(247, 174, 248, 0.8)',
+    'rgba(179, 136, 235, 0.8)',
+    'rgba(128, 147, 241, 0.8)',
+    'rgba(133, 224, 247, 0.8)',
+  ];
+  return colors[i % colors.length];
 };
 
-initB.addEventListener('click', generate);
+const isIntersect = (point, circle) => {
+  const dist = Math.sqrt((point.x - circle.x) ** 2 + (point.y - circle.y) ** 2);
+  return dist < circle.radius;
+};
 
+const getCircleParams = (i) => {
+  const x = getRandomInt(0 + 50, WIDTH - 50);
+  const y = getRandomInt(0 + 50, HEIGHT - 50);
+  const radius = 30;
+  return {x, y, radius, i};
+};
+let selected;
+const drawCircle = ({x, y, radius, isFound, i, color}) => {
+  ctx2.fillStyle = isFound ? color : selected && i === selected.i ? 'black' : 'grey';
+  ctx2.beginPath();
+  ctx2.arc(x, y, radius, 0, 2 * Math.PI);
+  ctx2.fill();
+};
+
+const circles = [];
+const numCircles = 10;
+for (var i = 0; i < numCircles; i++) {
+  const c = getCircleParams(i);
+  c.audioParams = i < numCircles / 2 ? getRandomParams(i) : circles[i % (numCircles / 2)].audioParams;
+  c.color = i < numCircles / 2 ? getColor(i) : circles[i % (numCircles / 2)].color;
+  circles.push(c);
+}
+
+const draw = () => {
+  window.requestAnimationFrame(() => {
+    for (let circle of circles) {
+      drawCircle(circle);
+    }
+    draw();
+  });
+};
+draw();
+
+canvas.addEventListener('click', (e) => {
+  const pos = {
+    x: e.clientX,
+    y: e.clientY
+  };
+  circles.forEach(circle => {
+    if (isIntersect(pos, circle)) {
+      if (!selected) {
+        selected = circle;
+      } else if(circle.audioParams.i === selected.audioParams.i) {
+        circle.isFound = true;
+        selected.isFound = true;
+        selected = undefined;
+      } else {
+        selected = undefined;
+      }
+      createNote(circle.audioParams);
+    }
+  });
+});
