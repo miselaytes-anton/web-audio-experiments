@@ -1,5 +1,5 @@
 {
-  "name": "loop-app",
+  "name": "memory-app",
   "version": "0.0.1",
   "scripts": {
     "build": "NODE_ENV=production webpack",
@@ -8,7 +8,7 @@
     "lint": "eslint ./src/"
   },
   "dependencies": {
-    "redux": "^4.0.0"
+    "canvas-utils": "^0.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",

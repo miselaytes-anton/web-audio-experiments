@@ -14,7 +14,7 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(['build']),
     new HtmlWebpackPlugin({
-      title: 'Loop app',
+      title: 'Memory app',
       template: 'index.html'
     })
   ],

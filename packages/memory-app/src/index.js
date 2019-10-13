@@ -1,5 +1,6 @@
 import {playNote, getRandomParams, createContext} from './audio';
-import {getCircleParams, isIntersect, setCanvasSize, getColor, drawCircle} from './canvas';
+import {setCanvasSize} from 'canvas-utils';
+import {getCircleParams, isIntersect, getColor, drawCircle} from './canvas';
 
 const canvas = document.getElementById('the-canvas');
 const canvasCtx = canvas.getContext('2d');

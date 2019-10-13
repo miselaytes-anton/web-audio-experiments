@@ -11,25 +11,6 @@ const getColor = (i) => {
     return colors[i % colors.length];
 };
 
-const getRatio = (canvasContext) => {
-    const dpr = window.devicePixelRatio || 1;
-    const bsr = canvasContext.webkitBackingStorePixelRatio ||
-        canvasContext.mozBackingStorePixelRatio ||
-        canvasContext.msBackingStorePixelRatio ||
-        canvasContext.oBackingStorePixelRatio ||
-        canvasContext.backingStorePixelRatio || 1;
-    return dpr / bsr;
-};
-
-const setCanvasSize = (canvasContext, W, H) => {
-    const ratio = getRatio(canvasContext);
-    canvasContext.canvas.width = W * ratio;
-    canvasContext.canvas.height = H * ratio;
-    canvasContext.canvas.style.width = W + 'px';
-    canvasContext.canvas.style.height = H + 'px';
-    canvasContext.setTransform(ratio, 0, 0, ratio, 0, 0);
-};
-
 const isIntersect = (point, circle) => {
     const dist = Math.sqrt((point.x - circle.x) ** 2 + (point.y - circle.y) ** 2);
     return dist < circle.radius;
@@ -49,4 +30,4 @@ const drawCircle = (ctx2, {x, y, radius, isFound, color}, isSelected) => {
     ctx2.fill();
   };
 
-export {getCircleParams, isIntersect, setCanvasSize, getRatio, getColor, drawCircle};
+export {getCircleParams, isIntersect, getColor, drawCircle};
