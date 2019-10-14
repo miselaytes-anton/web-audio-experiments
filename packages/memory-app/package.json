@@ -8,7 +8,10 @@
     "lint": "eslint ./src/"
   },
   "dependencies": {
-    "canvas-utils": "^0.0.0"
+    "@tonaljs/note": "^3.2.4",
+    "@tonaljs/scale": "^3.2.3",
+    "@tonaljs/scale-dictionary": "^3.2.3",
+    "tonal": "^2.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",

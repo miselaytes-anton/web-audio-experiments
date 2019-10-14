@@ -9,4 +9,6 @@ const max = Math.floor(_max);
 return Math.floor(Math.random() * (max - min)) + min;
 };
 
-export {getRandomArbitrary, getRandomInt};
+const sample = arr => arr[getRandomInt(0, arr.length)];
+
+export {getRandomArbitrary, getRandomInt, sample};

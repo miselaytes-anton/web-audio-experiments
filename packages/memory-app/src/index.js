@@ -1,10 +1,9 @@
-import {playNote, getRandomParams, createContext} from './audio';
-import {setCanvasSize} from 'canvas-utils';
-import {getCircleParams, isIntersect, getColor, drawCircle} from './canvas';
+import {playNote, getRandomParams, createContext, getFreqs} from './audio';
+import {getCircleParams, isIntersect, getColor, drawCircle, setCanvasSize, clearCanvas, showScore} from './canvas';
 
 const canvas = document.getElementById('the-canvas');
 const canvasCtx = canvas.getContext('2d');
-
+const FREQS = getFreqs();
 const WIDTH = window.innerWidth;
 const HEIGHT = window.innerHeight;
 setCanvasSize(canvasCtx, WIDTH, HEIGHT);
@@ -21,27 +20,24 @@ const STATE = {
 
 for (var i = 0; i < STATE.numCircles; i++) {
   const c = getCircleParams(i, WIDTH, HEIGHT);
-  c.audioParams = i < STATE.numCircles / 2 ? getRandomParams(i) : STATE.circles[i % (STATE.numCircles / 2)].audioParams;
+  c.audioParams = i < STATE.numCircles / 2 ? getRandomParams(FREQS[i]) : STATE.circles[i % (STATE.numCircles / 2)].audioParams;
   c.color = i < STATE.numCircles / 2 ? getColor(i) : STATE.circles[i % (STATE.numCircles / 2)].color;
   STATE.circles.push(c);
 }
 
 const draw = () => {
   window.requestAnimationFrame(() => {
-    canvasCtx.fillStyle = 'white';
-    canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+    clearCanvas(canvasCtx, WIDTH, HEIGHT);
     for (let circle of STATE.circles) {
-      drawCircle(canvasCtx, circle, STATE.selected && STATE.selected.i === circle.i);
+      drawCircle(canvasCtx, circle, STATE.selected && STATE.selected.id === circle.id);
     }
-    canvasCtx.font = '30px Helvetica';
-    canvasCtx.fillStyle = 'black';
-    canvasCtx.fillText(`SCORE: ${STATE.score}`, WIDTH - 200, HEIGHT - 50);
+    showScore(canvasCtx, WIDTH, HEIGHT, STATE.score);
     draw();
   });
 };
 draw();
 
-const melody = (played) => {
+const won = (played) => {
   const start = played[0].currentTime;
   played.forEach(played => {
     const offset = Math.ceil((played.currentTime - start) / 2);
@@ -52,6 +48,8 @@ const melody = (played) => {
   });
 };
 
+const gameIsFinished = () => !STATE.circles.find(circle => circle.isFound === false);
+
 canvas.addEventListener('click', (e) => {
   if (!STATE.audio.ctx) {
     STATE.audio = createContext();
@@ -61,27 +59,29 @@ canvas.addEventListener('click', (e) => {
     y: e.clientY
   };
   STATE.circles.forEach(circle => {
-    if (isIntersect(pos, circle)) {
-      playNote(STATE.audio, circle.audioParams);
-      if (STATE.isWon) {
-        return;
-      }
-      STATE.played.push({currentTime: STATE.audio.ctx.currentTime, circle});
-      if (!STATE.selected) {
-        STATE.selected = circle;
-      } else if(circle.audioParams.i === STATE.selected.audioParams.i && circle.i !== STATE.selected.i) {
-        STATE.score += 5;
-        circle.isFound = true;
-        STATE.selected.isFound = true;
-        STATE.selected = null;
-        if (!STATE.circles.find(circle => circle.isFound === false)) {
-          STATE.isWon = true;
-          setTimeout(() => melody(STATE.played), 2000);
-        }
-      } else {
-        STATE.score -= 1;
-        STATE.selected = null;
-      }
+    if (!isIntersect(pos, circle)) {
+      return;
     }
+    playNote(STATE.audio, circle.audioParams);
+    if (gameIsFinished()) {
+      return;
+    }
+    STATE.played.push({currentTime: STATE.audio.ctx.currentTime, circle});
+
+    if (!STATE.selected) {
+      STATE.selected = circle;
+    } else if (circle.audioParams.id === STATE.selected.audioParams.id && circle.id !== STATE.selected.id) {
+      STATE.score += 5;
+      circle.isFound = true;
+      STATE.selected.isFound = true;
+      STATE.selected = null;
+      if (gameIsFinished()) {
+        setTimeout(() => won(STATE.played), 2000);
+      }
+    } else {
+      STATE.score -= 1;
+      STATE.selected = null;
+    }
+
   });
 });

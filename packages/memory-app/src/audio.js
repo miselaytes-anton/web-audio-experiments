@@ -1,5 +1,8 @@
 import SimpleReverb from './SimpleReverb';
-import {getRandomArbitrary, getRandomInt} from './utils';
+import {getRandomArbitrary, getRandomInt, sample} from './utils';
+import {note} from '@tonaljs/tonal';
+import {scale} from '@tonaljs/scale';
+import {entries} from '@tonaljs/scale-dictionary';
 
 const playNote = function({ctx, reverb}, {freq, attack, decay, sustain, release, mod1Type, mod2Type, oscType, offset = 0}) {
     const start = ctx.currentTime + offset;
@@ -42,8 +45,7 @@ const playNote = function({ctx, reverb}, {freq, attack, decay, sustain, release,
     return types[getRandomInt(0, 4)];
   };
 
-  const getRandomParams = (i) => {
-    const freq = getRandomInt(100, 1000);
+  const getRandomParams = (freq) => {
     const attack = getRandomArbitrary(0.01, 0.5);
     const decay = getRandomArbitrary(0.01, 0.5);
     const sustain = getRandomArbitrary(0.01, 0.5);
@@ -51,7 +53,8 @@ const playNote = function({ctx, reverb}, {freq, attack, decay, sustain, release,
     const mod1Type = getRandomOscType();
     const mod2Type = getRandomOscType();
     const oscType = getRandomOscType();
-    return {i, freq, attack, decay, sustain, release, mod1Type, mod2Type, oscType};
+    const id = Math.random() * 10 ** 17;
+    return {id, freq, attack, decay, sustain, release, mod1Type, mod2Type, oscType};
   };
 
   const createContext = () => {
@@ -65,4 +68,21 @@ const playNote = function({ctx, reverb}, {freq, attack, decay, sustain, release,
     return {ctx, reverb};
   };
 
-  export {playNote, getRandomOscType, getRandomParams, createContext};
+const getFreqs = () => {
+  const letters = ['a', 'b', 'c', 'd', 'e', 'f'];
+  const letter = sample(letters);
+  const scales = entries()
+  .map(e => scale(`${letter} ${e.name}`))
+  .filter(s => s.notes.length >= 5);
+  const selectedScale = sample(scales);
+  const octave = getRandomInt(1, 6);
+  const notes = selectedScale.notes;
+  const freqs = notes
+  .map(n => note(`${n}${octave}`).freq);
+
+  console.log(`Scale: ${selectedScale.name} \nOctave: ${octave} \nNotes: ${notes.join(',')} \nFreqs: ${freqs.join(',')}`);
+
+  return freqs;
+};
+
+  export {playNote, getRandomOscType, getRandomParams, createContext, getFreqs};
