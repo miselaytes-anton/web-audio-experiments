@@ -43,7 +43,9 @@ const won = (played) => {
     const offset = Math.ceil((played.currentTime - start) / 2);
     playNote(STATE.audio, {...played.circle.audioParams, offset});
     setTimeout(() => {
-      played.circle.radius = played.circle.radius * 2;
+      if(played.circle.radius < WIDTH) {
+        played.circle.radius = played.circle.radius * 2;
+      }
     }, offset * 1000);
   });
 };

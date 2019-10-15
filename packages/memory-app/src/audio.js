@@ -38,6 +38,15 @@ const playNote = function({ctx, reverb}, {freq, attack, decay, sustain, release,
     mod1.start(start);
     mod2.start(start);
     osc.start(start);
+    setTimeout(() => {
+      osc.stop();
+      mod1.stop();
+      mod1.disconnect();
+      mod2.stop();
+      mod2.disconnect();
+      osc.disconnect();
+      env.disconnect();
+    }, (start + attack + decay + sustain + release) * 1000 * 2);
   };
 
   const getRandomOscType = () => {
@@ -60,7 +69,7 @@ const playNote = function({ctx, reverb}, {freq, attack, decay, sustain, release,
   const createContext = () => {
     const ctx = new AudioContext();
     const reverb = new SimpleReverb(ctx, {
-      seconds: 1,
+      seconds: 1.5,
       decay: 2,
       reverse: 0
     });
@@ -75,12 +84,12 @@ const getFreqs = () => {
   .map(e => scale(`${letter} ${e.name}`))
   .filter(s => s.notes.length >= 5);
   const selectedScale = sample(scales);
-  const octave = getRandomInt(1, 6);
+  const octave = () => getRandomInt(3, 6);
   const notes = selectedScale.notes;
   const freqs = notes
-  .map(n => note(`${n}${octave}`).freq);
+  .map(n => note(`${n}${octave()}`).freq);
 
-  console.log(`Scale: ${selectedScale.name} \nOctave: ${octave} \nNotes: ${notes.join(',')} \nFreqs: ${freqs.join(',')}`);
+  console.log(`Scale: ${selectedScale.name} \nNotes: ${notes.join(',')} \nFreqs: ${freqs.join(',')}`);
 
   return freqs;
 };
