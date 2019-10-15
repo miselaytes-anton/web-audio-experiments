@@ -20,14 +20,22 @@ const getCircleParams = (id, width, height) => {
   const x = getRandomInt(0 + 50, width - 50);
   const y = getRandomInt(0 + 50, height - 50);
   const radius = 30;
-  return {x, y, radius, id, isFound: false};
+  const color = getColor(id);
+  return {x, y, radius, id, isFound: false, color};
 };
 
-const drawCircle = (canvasContext, {x, y, radius, isFound, color}, isSelected) => {
+const drawCircle = (canvasContext, {x, y, radius, isFound, color, name}, isSelected) => {
   canvasContext.fillStyle = isFound ? color : isSelected ? 'black' : 'grey';
   canvasContext.beginPath();
   canvasContext.arc(x, y, radius, 0, 2 * Math.PI);
   canvasContext.fill();
+
+  if (isFound) {
+    canvasContext.font = '20px Helvetica';
+    canvasContext.fillStyle = 'white';
+    canvasContext.fillText(name, x - 10, y + 8);
+  }
+
 };
 
 const clearCanvas = (canvasContext, w, h) => {

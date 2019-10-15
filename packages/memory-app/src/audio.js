@@ -77,7 +77,7 @@ const playNote = function({ctx, reverb}, {freq, attack, decay, sustain, release,
     return {ctx, reverb};
   };
 
-const getFreqs = () => {
+const getScale = () => {
   const letters = ['a', 'b', 'c', 'd', 'e', 'f'];
   const letter = sample(letters);
   const scales = entries()
@@ -85,13 +85,18 @@ const getFreqs = () => {
   .filter(s => s.notes.length >= 5);
   const selectedScale = sample(scales);
   const octave = () => getRandomInt(3, 6);
-  const notes = selectedScale.notes;
-  const freqs = notes
-  .map(n => note(`${n}${octave()}`).freq);
-
-  console.log(`Scale: ${selectedScale.name} \nNotes: ${notes.join(',')} \nFreqs: ${freqs.join(',')}`);
-
-  return freqs;
+  const notes = selectedScale.notes
+  .map(n => {
+    const selectedNote = note(`${n}${octave()}`);
+    return {
+      name: selectedNote.name,
+      freq: parseFloat(selectedNote.freq.toFixed(2))
+      };
+  });
+  return {
+    scale: selectedScale.name,
+    notes
+  };
 };
 
-  export {playNote, getRandomOscType, getRandomParams, createContext, getFreqs};
+  export {playNote, getRandomOscType, getRandomParams, createContext, getScale};

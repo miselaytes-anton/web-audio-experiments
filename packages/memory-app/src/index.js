@@ -1,9 +1,9 @@
-import {playNote, getRandomParams, createContext, getFreqs} from './audio';
-import {getCircleParams, isIntersect, getColor, drawCircle, setCanvasSize, clearCanvas, showScore} from './canvas';
+import {playNote, getRandomParams, createContext, getScale} from './audio';
+import {getCircleParams, isIntersect, drawCircle, setCanvasSize, clearCanvas, showScore} from './canvas';
 
 const canvas = document.getElementById('the-canvas');
 const canvasCtx = canvas.getContext('2d');
-const FREQS = getFreqs();
+
 const WIDTH = window.innerWidth;
 const HEIGHT = window.innerHeight;
 setCanvasSize(canvasCtx, WIDTH, HEIGHT);
@@ -17,13 +17,17 @@ const STATE = {
   isWon: false,
   audio: {ctx: null, reverb: null},
 };
+STATE.scale = getScale(STATE.numCircles);
+console.log(STATE.scale);
 
-for (var i = 0; i < STATE.numCircles; i++) {
-  const c = getCircleParams(i, WIDTH, HEIGHT);
-  c.audioParams = i < STATE.numCircles / 2 ? getRandomParams(FREQS[i]) : STATE.circles[i % (STATE.numCircles / 2)].audioParams;
-  c.color = i < STATE.numCircles / 2 ? getColor(i) : STATE.circles[i % (STATE.numCircles / 2)].color;
-  STATE.circles.push(c);
-}
+const notes = STATE.scale.notes.slice(0, STATE.numCircles / 2).map(({freq, name}) => ({
+  name,
+  audioParams: getRandomParams(freq),
+}));
+STATE.circles = [...notes, ...notes].map((note, i) => ({
+  ...getCircleParams(i, WIDTH, HEIGHT),
+  ...note,
+}));
 
 const draw = () => {
   window.requestAnimationFrame(() => {
@@ -54,6 +58,7 @@ const gameIsFinished = () => !STATE.circles.find(circle => circle.isFound === fa
 
 canvas.addEventListener('click', (e) => {
   if (!STATE.audio.ctx) {
+    // audio context can only be created after first user interaction
     STATE.audio = createContext();
   }
   const pos = {
@@ -84,6 +89,5 @@ canvas.addEventListener('click', (e) => {
       STATE.score -= 1;
       STATE.selected = null;
     }
-
   });
 });
