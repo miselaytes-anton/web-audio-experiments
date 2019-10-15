@@ -62,8 +62,7 @@ const playNote = function({ctx, reverb}, {freq, attack, decay, sustain, release,
     const mod1Type = getRandomOscType();
     const mod2Type = getRandomOscType();
     const oscType = getRandomOscType();
-    const id = Math.random() * 10 ** 17;
-    return {id, freq, attack, decay, sustain, release, mod1Type, mod2Type, oscType};
+    return {freq, attack, decay, sustain, release, mod1Type, mod2Type, oscType};
   };
 
   const createContext = () => {

@@ -1,5 +1,7 @@
 import {getRandomInt} from './utils';
 
+const FONT_FAMILY = 'Acme';
+
 const getColor = (i) => {
   const colors = [
     'rgba(253, 197, 245, 0.8)',
@@ -19,9 +21,8 @@ const isIntersect = (point, circle) => {
 const getCircleParams = (id, width, height) => {
   const x = getRandomInt(0 + 50, width - 50);
   const y = getRandomInt(0 + 50, height - 50);
-  const radius = 30;
-  const color = getColor(id);
-  return {x, y, radius, id, isFound: false, color};
+  const radius = 35;
+  return {x, y, radius, id};
 };
 
 const drawCircle = (canvasContext, {x, y, radius, isFound, color, name}, isSelected) => {
@@ -31,22 +32,28 @@ const drawCircle = (canvasContext, {x, y, radius, isFound, color, name}, isSelec
   canvasContext.fill();
 
   if (isFound) {
-    canvasContext.font = '20px Helvetica';
+    canvasContext.font = `30px ${FONT_FAMILY}`;
     canvasContext.fillStyle = 'white';
-    canvasContext.fillText(name, x - 10, y + 8);
+    canvasContext.fillText(name, x - canvasContext.measureText(name).width / 2, y + 8);
   }
-
 };
 
 const clearCanvas = (canvasContext, w, h) => {
-  canvasContext.fillStyle = 'white';
+  canvasContext.fillStyle = 'rgba(255,255,255,0.8)';
   canvasContext.fillRect(0, 0, w, h);
 };
 
 const showScore = (canvasContext, w, h, score) => {
-  canvasContext.font = '30px Helvetica';
+  canvasContext.font = `40px ${FONT_FAMILY}`;
   canvasContext.fillStyle = 'black';
-  canvasContext.fillText(`SCORE: ${score}`, w - 200, h - 50);
+  canvasContext.fillText(`Score: ${score}`, w - 200, h - 50);
+};
+
+const showScaleName = (canvasContext, w, h, score, frame) => {
+  canvasContext.font = `120px ${FONT_FAMILY}`;
+  const opacity = Math.max(1 - frame * 0.005, 0);
+  canvasContext.fillStyle = `rgb(50,50,50, ${opacity})`;
+  canvasContext.fillText(score, (w - canvasContext.measureText(score).width) / 2, h / 2);
 };
 
 const getRatio = (canvasContext) => {
@@ -68,4 +75,4 @@ const setCanvasSize = (canvasContext, W, H) => {
   canvasContext.setTransform(ratio, 0, 0, ratio, 0, 0);
 };
 
-export {getCircleParams, isIntersect, getColor, drawCircle, setCanvasSize, clearCanvas, showScore};
+export {getCircleParams, isIntersect, getColor, drawCircle, setCanvasSize, clearCanvas, showScore, showScaleName};

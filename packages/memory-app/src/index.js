@@ -1,5 +1,5 @@
 import {playNote, getRandomParams, createContext, getScale} from './audio';
-import {getCircleParams, isIntersect, drawCircle, setCanvasSize, clearCanvas, showScore} from './canvas';
+import {getCircleParams, isIntersect, drawCircle, setCanvasSize, clearCanvas, showScore, showScaleName, getColor} from './canvas';
 
 const canvas = document.getElementById('the-canvas');
 const canvasCtx = canvas.getContext('2d');
@@ -20,22 +20,27 @@ const STATE = {
 STATE.scale = getScale(STATE.numCircles);
 console.log(STATE.scale);
 
-const notes = STATE.scale.notes.slice(0, STATE.numCircles / 2).map(({freq, name}) => ({
+const notes = STATE.scale.notes.map(({freq, name}, i) => ({
   name,
-  audioParams: getRandomParams(freq),
+  audioParams: {...getRandomParams(freq), id: i},
 }));
 STATE.circles = [...notes, ...notes].map((note, i) => ({
   ...getCircleParams(i, WIDTH, HEIGHT),
   ...note,
+  color: getColor(note.audioParams.id),
+  isFound: false
 }));
 
+let frame = 0;
 const draw = () => {
   window.requestAnimationFrame(() => {
+    frame++;
     clearCanvas(canvasCtx, WIDTH, HEIGHT);
     for (let circle of STATE.circles) {
       drawCircle(canvasCtx, circle, STATE.selected && STATE.selected.id === circle.id);
     }
     showScore(canvasCtx, WIDTH, HEIGHT, STATE.score);
+    showScaleName(canvasCtx, WIDTH, HEIGHT, STATE.scale.scale, frame);
     draw();
   });
 };
@@ -44,10 +49,10 @@ draw();
 const won = (played) => {
   const start = played[0].currentTime;
   played.forEach(played => {
-    const offset = Math.ceil((played.currentTime - start) / 2);
+    const offset = Math.ceil((played.currentTime - start) / 4);
     playNote(STATE.audio, {...played.circle.audioParams, offset});
     setTimeout(() => {
-      if(played.circle.radius < WIDTH) {
+      if(played.circle.radius < HEIGHT / 2) {
         played.circle.radius = played.circle.radius * 2;
       }
     }, offset * 1000);
