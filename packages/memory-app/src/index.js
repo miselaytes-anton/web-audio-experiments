@@ -12,12 +12,11 @@ const STATE = {
   selected: null,
   score: 0,
   circles: [],
-  numCircles: 10,
   played: [],
   isWon: false,
   audio: {ctx: null, reverb: null},
+  scale: getScale(),
 };
-STATE.scale = getScale(STATE.numCircles);
 console.log(STATE.scale);
 
 const notes = STATE.scale.notes.map(({freq, name}, i) => ({
