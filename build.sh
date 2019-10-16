@@ -18,3 +18,4 @@ cp -r ./packages/tape-app/build ./build/tape
 cp -r ./packages/visualizer-app/build ./build/visual
 cp -r ./packages/voice-shape-app/build ./build/voice
 cp -r ./packages/freeverb-app/build ./build/freeverb
+cp -r ./packages/memory-app/build ./build/memory
